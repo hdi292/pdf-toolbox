@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استخراج الصور من PDF مجاناً - PDF Toolbox</title>
+    <meta name="description" content="قم باستخراج جميع الصور المضمنة داخل ملفات الـ PDF وحفظها بدقة عالية مجاناً أونلاين عبر متصفحك مباشرة.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <!-- App Section -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">🖼️</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة استخراج الصور من الـ PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">استخرج كافة الصور المضمنة داخل مستند الـ PDF الخاص بك بدقتها الأصلية.</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-8 text-center">
+                <input type="file" id="pdfFile" accept="application/pdf" class="hidden" onchange="handleFileSelection(event)">
+                <button onclick="document.getElementById('pdfFile').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار ملف PDF</button>
+                <p id="fileStatusText" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+            </div>
+
+            <button id="extractBtn" onclick="processExtractImages()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto hover:opacity-90 transition">
+                استخراج الصور وتحميلها 🚀
+            </button>
+
+            <!-- Image Preview Area -->
+            <div id="imageGallery" class="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 hidden"></div>
+        </div>
+
+        <!-- SEO Article -->
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">مميزات أداة استخراج الصور</h2>
+            <p>
+                تسمح لك هذه الأداة بسحب كافة الصور الرسومية والمخططات والأشكال الموجودة في مستند الـ PDF وحفظها كملفات صور منفصلة عالية الجودة لاستخدامها في عروضك التقديمية أو مشاريعك.
+            </p>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">كيفية الاستخدام:</h3>
+            <ol class="list-decimal list-inside space-y-2 text-slate-400 text-sm">
+                <li>اضغط على زر <strong class="text-white">"اختيار ملف PDF"</strong> وحدد المستند المطلوب.</li>
+                <li>اضغط على <strong class="text-white">"استخراج الصور وتحميلها"</strong> لمسح المستند.</li>
+                <li>ستظهر الصور المستخرجة على الشاشة مع إمكانية تنزيلها مباشرة.</li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">أمان وسرعة كاملة:</h3>
+            <p class="text-sm text-slate-400">
+                تتم عملية التحليل والاستخراج داخل جهازك مباشرة عن طريق تقنيات المتصفح الحديثة لضمان أقصى درجات الخصوصية والأمان.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let selectedFile = null;
+
+        function handleFileSelection(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                selectedFile = files[0];
+                document.getElementById('fileStatusText').innerText = `تم اختيار: ${selectedFile.name}`;
+                document.getElementById('extractBtn').classList.remove('hidden');
+                document.getElementById('imageGallery').innerHTML = '';
+                document.getElementById('imageGallery').classList.add('hidden');
+            }
+        }
+
+        async function processExtractImages() {
+            if (!selectedFile) return;
+
+            const btn = document.getElementById('extractBtn');
+            btn.innerText = "جاري استخراج الصور... ⏳";
+            btn.disabled = true;
+
+            const gallery = document.getElementById('imageGallery');
+            gallery.innerHTML = '';
+            gallery.classList.remove('hidden');
+
+            try {
+                const arrayBuffer = await selectedFile.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                let imageCount = 0;
+
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const operatorList = await page.getOperatorList();
+
+                    for (let j = 0; j < operatorList.fnArray.length; j++) {
+                        if (operatorList.fnArray[j] === pdfjsLib.OPS.paintImageXObject) {
+                            const imgName = operatorList.argsArray[j][0];
+                            try {
+                                const imgObj = await page.objs.get(imgName);
+                                if (imgObj && imgObj.bitmap) {
+                                    imageCount++;
+                                    const canvas = document.createElement('canvas');
+                                    canvas.width = imgObj.bitmap.width;
+                                    canvas.height = imgObj.bitmap.height;
+                                    const ctx = canvas.getContext('2d');
+                                    ctx.drawImage(imgObj.bitmap, 0, 0);
+
+                                    const imgDataUrl = canvas.toDataURL('image/png');
+                                    
+                                    const container = document.createElement('div');
+                                    container.className = 'bg-slate-900 p-3 rounded-xl border border-slate-700 flex flex-col items-center gap-2';
+                                    
+                                    const imgElem = document.createElement('img');
+                                    imgElem.src = imgDataUrl;
+                                    imgElem.className = 'w-full h-32 object-cover rounded-lg';
+                                    
+                                    const downloadLink = document.createElement('a');
+                                    downloadLink.href = imgDataUrl;
+                                    downloadLink.download = `extracted_image_${imageCount}.png`;
+                                    downloadLink.className = 'text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1.5 px-3 rounded-lg w-full text-center block transition';
+                                    downloadLink.innerText = `تحميل صورة ${imageCount}`;
+
+                                    container.appendChild(imgElem);
+                                    container.appendChild(downloadLink);
+                                    gallery.appendChild(container);
+                                }
+                            } catch (e) {
+                                console.log("خطأ في معالجة عنصر صورة:", e);
+                            }
+                        }
+                    }
+                }
+
+                if (imageCount === 0) {
+                    gallery.innerHTML = '<p class="col-span-full text-slate-400 text-sm">لم يتم العثور على صور مستقلة داخل هذا المستند.</p>';
+                    document.getElementById('fileStatusText').innerText = "لم تكتشف الأداة صوراً مضمنة بالداخل.";
+                } else {
+                    document.getElementById('fileStatusText').innerText = `✅ تم استخراج ${imageCount} صورة بنجاح!`;
+                }
+
+            } catch (err) {
+                alert("حدث خطأ أثناء قراءة المستند.");
+                console.error(err);
+            } finally {
+                btn.innerText = "استخراج الصور وتحميلها 🚀";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
