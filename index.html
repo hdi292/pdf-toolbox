@@ -3,71 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">PDF Toolbox - المنصة الشاملة لأدوات الـ PDF</title>
+    <title>PDF Toolbox - منصة أدوات الـ PDF الشاملة والمجانية</title>
+    <meta name="description" content="أكثر من 40 أداة معالجة PDF مجانية بالكامل. دمج، ضغط، تحويل صور، وتعديل ملفاتك بأمان تام.">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- مكتبات معالجة الـ PDF المتقدمة والدقيقة -->
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
-    
+    <!-- مكتبة تسجيل الدخول بحساب جوجل -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
-        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, sans-serif; }
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
         .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .card-hover:hover { transform: translateY(-3px); border-color: #6366F1; box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.25); }
+        .card-hover:hover { transform: translateY(-4px); border-color: #6366F1; box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3); }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <!-- Header -->
-    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <!-- Header / الشريط العلوي -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-black flex items-center gap-2">
                 <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
             </a>
-            <a href="index.html" id="homeLink" class="text-xs bg-indigo-950 border border-indigo-700 text-indigo-300 font-bold px-4 py-1.5 rounded-full hover:bg-indigo-900 transition">الرئيسية (40 أداة)</a>
+            
+            <!-- زر تسجيل الدخول بحساب جوجل -->
+            <div id="authContainer" class="flex items-center gap-3">
+                <div id="g_id_onload"
+                    data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                    data-callback="handleCredentialResponse">
+                </div>
+                <div class="g_id_signin" data-type="standard" data-theme="dark" data-size="medium" data-text="signin_with"></div>
+                <div id="userProfile" class="hidden flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+                    <img id="userAvatar" class="w-7 h-7 rounded-full" src="" alt="User">
+                    <span id="userName" class="text-xs font-bold text-slate-200"></span>
+                    <button onclick="googleLogout()" class="text-xs text-rose-400 hover:underline mr-2">خروج</button>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- الكتالوج الرئيسي -->
-    <div id="mainCatalog">
-        <section class="py-12 text-center px-4 max-w-4xl mx-auto">
-            <h1 class="text-3xl md:text-5xl font-black mt-2 mb-4 leading-tight">
-                مركز <span class="gradient-text">أدوات الـ PDF</span> الشامل
-            </h1>
-            <p class="text-slate-400 text-base md:text-lg mb-6">
-                40 أداة معالجة مجانية بالكامل، تعمل بدقة عالية وبأمان تام داخل متصفحك.
-            </p>
-            <input type="text" id="search" onkeyup="filterTools()" placeholder="🔍 ابحث عن أداة (مثال: دمج، Word، صور)..." class="w-full max-w-lg px-6 py-3.5 rounded-2xl bg-slate-800/80 border border-slate-700 text-slate-200 focus:outline-none focus:border-indigo-500 shadow-2xl">
-        </section>
+    <!-- Hero Section -->
+    <section class="py-14 text-center px-4 max-w-4xl mx-auto">
+        <span class="bg-indigo-950 border border-indigo-700 text-indigo-300 text-xs font-bold px-4 py-1.5 rounded-full">40 أداة متخصصة مجانية 100%</span>
+        <h1 class="text-3xl md:text-5xl font-black mt-4 mb-4 leading-tight">
+            منصة <span class="gradient-text">معالجة المستندات</span> الذكية
+        </h1>
+        <p class="text-slate-400 text-base md:text-lg mb-8">
+            قم بدمج، ضغط، وتحويل ملفاتك مباشرة عبر المتصفح وبصفحات منفصلة لكل أداة لحماية الخصوصية.
+        </p>
+        <input type="text" id="search" onkeyup="filterTools()" placeholder="🔍 ابحث عن الأداة التي تحتاجها (مثال: دمج، Word، صور)..." class="w-full max-w-lg px-6 py-3.5 rounded-2xl bg-slate-800/80 border border-slate-700 text-slate-200 focus:outline-none focus:border-indigo-500 shadow-2xl">
+    </section>
 
-        <main class="max-w-7xl mx-auto px-6 py-4 flex-grow w-full">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="toolsGrid"></div>
-        </main>
-    </div>
+    <!-- Catalog (40 Tools Grid) -->
+    <main class="max-w-7xl mx-auto px-6 py-4 flex-grow w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="toolsGrid">
+            
+            <!-- الأداة 1 -->
+            <a href="merge-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
+                <div class="text-3xl mb-2">🧩</div>
+                <h3 class="font-bold text-white mb-1">دمج PDF</h3>
+                <p class="text-slate-400 text-xs">تجميع عدة ملفات في مستند واحد.</p>
+            </a>
 
-    <!-- واجهة الأداة المنفردة -->
-    <div id="singleToolPage" class="hidden max-w-4xl mx-auto px-4 py-10 flex-grow w-full">
-        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-8">
-            <div class="text-5xl mb-3" id="toolIcon">⚙️</div>
-            <h1 class="text-3xl font-extrabold mb-2 text-white" id="toolTitle">عنوان الأداة</h1>
-            <p class="text-slate-400 text-sm mb-8" id="toolDesc">وصف الأداة المحددة</p>
+            <!-- الأداة 2 -->
+            <a href="jpg-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
+                <div class="text-3xl mb-2">🖼️</div>
+                <h3 class="font-bold text-white mb-1">صور إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل صور JPG/PNG لملف PDF.</p>
+            </a>
 
-            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-10 text-center">
-                <input type="file" id="fileInput" multiple class="hidden" onchange="handleFiles(event)">
-                <button onclick="document.getElementById('fileInput').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار الملفات</button>
-                <p id="fileStatus" class="mt-4 text-sm font-semibold text-indigo-300"></p>
-            </div>
+            <!-- الأداة 3 -->
+            <a href="compress-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
+                <div class="text-3xl mb-2">🗜️</div>
+                <h3 class="font-bold text-white mb-1">ضغط PDF</h3>
+                <p class="text-slate-400 text-xs">تقليل حجم الملف بجودة عالية.</p>
+            </a>
 
-            <button id="processBtn" onclick="executeAction()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto">بدء المعالجة وتنزيل النتيجة 🚀</button>
+            <!-- الأداة 4 -->
+            <a href="word-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
+                <div class="text-3xl mb-2">📝</div>
+                <h3 class="font-bold text-white mb-1">Word إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل مستندات Word لـ PDF.</p>
+            </a>
+
+            <!-- الأداة 5 -->
+            <a href="pdf-to-txt.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
+                <div class="text-3xl mb-2">📄</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى TXT</h3>
+                <p class="text-slate-400 text-xs">استخراج كافة النصوص من الملف.</p>
+            </a>
+
+            <!-- باقي الروابط سيتم ربطها مع إرسال كل أداة بالترتيب -->
         </div>
-
-        <!-- الشرح للـ SEO و AdSense -->
-        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300">
-            <h2 class="text-2xl font-bold text-white mb-4 border-r-4 border-indigo-500 pr-3" id="articleHeading">شرح الأداة</h2>
-            <p class="mb-4" id="articleBody">المقال الشارح...</p>
-        </article>
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
@@ -75,133 +100,6 @@
     </footer>
 
     <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-
-        const toolsData = [
-            { id: 'merge-pdf', title: 'دمج PDF', icon: '🧩', desc: 'دمج عدة ملفات في مستند واحد مرتب.', article: 'تتيح لك هذه الأداة دمج ملفات الـ PDF المتعددة بسرعة فائقة ودقة عالية في مستند واحد محمي.' },
-            { id: 'jpg-to-pdf', title: 'صور إلى PDF', icon: '🖼️', desc: 'تحويل الصور JPG/PNG إلى ملف PDF.', article: 'تحويل كلي للصور وتنسيقها في مستند PDF عالي الجودة جاهز للطباعة.' },
-            { id: 'pdf-to-txt', title: 'استخراج النص من PDF', icon: '📝', desc: 'استخراج كافة النصوص من الملف.', article: 'قراءة واستخراج كافة النصوص العربية والإنجليزية المخزنة داخل المستند وتنزيلها بملف نصي.' },
-            { id: 'compress-pdf', title: 'ضغط PDF', icon: '🗜️', desc: 'تقليل حجم الملف بجودة عالية.', article: 'ضغط وتصغير حجم المستند مع الحفاظ على وضوح الخطوط والصفحات.' },
-            { id: 'split-pdf', title: 'تقسيم PDF', icon: '✂️', desc: 'فصل الصفحات إلى ملفات متعددة.', article: 'تقسيم المستند واستخراج كل صفحة في ملف PDF مستقل بدقة متناهية.' },
-            { id: 'rotate-pdf', title: 'تدوير الصفحات', icon: '🔄', desc: 'تعديل اتجاه الصفحات.', article: 'تعديل وتدوير الاتجاهات الأفقية والرأسية لصفحات المستند بسهولة.' }
-        ];
-
-        let loadedFiles = [];
-        let currentToolId = '';
-
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const toolId = urlParams.get('tool');
-            if (toolId) {
-                currentToolId = toolId;
-                const tool = toolsData.find(t => t.id === toolId) || toolsData[0];
-                showSingleTool(tool);
-            } else {
-                renderMainCatalog();
-            }
-        };
-
-        function renderMainCatalog() {
-            document.getElementById('mainCatalog').classList.remove('hidden');
-            document.getElementById('singleToolPage').classList.add('hidden');
-            const grid = document.getElementById('toolsGrid');
-            grid.innerHTML = '';
-            toolsData.forEach(tool => {
-                grid.innerHTML += `
-                    <a href="index.html?tool=${tool.id}" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
-                        <div class="text-3xl mb-2">${tool.icon}</div>
-                        <h3 class="font-bold text-white mb-1">${tool.title}</h3>
-                        <p class="text-slate-400 text-xs">${tool.desc}</p>
-                    </a>
-                `;
-            });
-        }
-
-        function showSingleTool(tool) {
-            document.getElementById('mainCatalog').classList.add('hidden');
-            document.getElementById('singleToolPage').classList.remove('hidden');
-            document.getElementById('pageTitle').innerText = `${tool.title} - PDF Toolbox`;
-            document.getElementById('toolTitle').innerText = tool.title;
-            document.getElementById('toolIcon').innerText = tool.icon;
-            document.getElementById('toolDesc').innerText = tool.desc;
-            document.getElementById('articleHeading').innerText = `طريقة استخدام أداة ${tool.title}`;
-            document.getElementById('articleBody').innerText = tool.article;
-        }
-
-        function handleFiles(e) {
-            loadedFiles = Array.from(e.target.files);
-            if(loadedFiles.length > 0) {
-                document.getElementById('fileStatus').innerText = `تم اختيار (${loadedFiles.length}) ملف بنجاح.`;
-                document.getElementById('processBtn').classList.remove('hidden');
-            }
-        }
-
-        async function executeAction() {
-            if(loadedFiles.length === 0) return;
-            const btn = document.getElementById('processBtn');
-            btn.innerText = "جاري المعالجة المتقدمة... ⏳";
-            btn.disabled = true;
-
-            try {
-                const { PDFDocument } = PDFLib;
-
-                // 1. أداة استخراج النص الدقيق (PDF to TXT)
-                if (currentToolId === 'pdf-to-txt') {
-                    let fullText = "";
-                    for (let file of loadedFiles) {
-                        const arrayBuffer = await file.arrayBuffer();
-                        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                        for (let i = 1; i <= pdf.numPages; i++) {
-                            const page = await pdf.getPage(i);
-                            const textContent = await page.getTextContent();
-                            const pageText = textContent.items.map(item => item.str).join(' ');
-                            fullText += `--- الصفحة ${i} ---\n` + pageText + "\n\n";
-                        }
-                    }
-                    download(fullText, "Extracted_Text.txt", "text/plain;charset=utf-8");
-                }
-                
-                // 2. أداة تحويل الصور إلى PDF (Images to PDF)
-                else if (currentToolId === 'jpg-to-pdf') {
-                    const newPdf = await PDFDocument.create();
-                    for (let file of loadedFiles) {
-                        const bytes = await file.arrayBuffer();
-                        let image = file.type.includes('png') ? await newPdf.embedPng(bytes) : await newPdf.embedJpg(bytes);
-                        const page = newPdf.addPage([image.width, image.height]);
-                        page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
-                    }
-                    const pdfBytes = await newPdf.save();
-                    download(pdfBytes, "Converted_Images.pdf", "application/pdf");
-                }
-
-                // 3. باقي عمليات الـ PDF (دمج، تقسيم، تدوير)
-                else {
-                    const newPdf = await PDFDocument.create();
-                    for (let file of loadedFiles) {
-                        if (file.type === 'application/pdf') {
-                            const bytes = await file.arrayBuffer();
-                            const pdf = await PDFDocument.load(bytes);
-                            const copiedPages = await newPdf.copyPages(pdf, pdf.getPageIndices());
-                            copiedPages.forEach((page) => {
-                                if (currentToolId === 'rotate-pdf') page.setRotation(PDFLib.degrees(90));
-                                newPdf.addPage(page);
-                            });
-                        }
-                    }
-                    const pdfBytes = await newPdf.save();
-                    download(pdfBytes, "PDF_Toolbox_Output.pdf", "application/pdf");
-                }
-
-                document.getElementById('fileStatus').innerText = "✅ تمت المعالجة بنجاح وتحميل الملف!";
-            } catch (err) {
-                alert("حدث خطأ أثناء المعالجة، يرجى التأكد من رفع ملفات سليمة.");
-                console.error(err);
-            } finally {
-                btn.innerText = "بدء المعالجة وتنزيل النتيجة 🚀";
-                btn.disabled = false;
-            }
-        }
-
         function filterTools() {
             let val = document.getElementById('search').value.toLowerCase();
             let cards = document.getElementsByClassName('tool-card');
@@ -209,6 +107,41 @@
                 c.style.display = c.innerText.toLowerCase().includes(val) ? 'block' : 'none';
             }
         }
+
+        // معالجة تسجيل الدخول بواسطة Google
+        function handleCredentialResponse(response) {
+            const responsePayload = parseJwt(response.credential);
+            document.querySelector('.g_id_signin').classList.add('hidden');
+            document.getElementById('userProfile').classList.remove('hidden');
+            document.getElementById('userName').innerText = responsePayload.name;
+            document.getElementById('userAvatar').src = responsePayload.picture;
+            localStorage.setItem('userLoggedIn', JSON.stringify(responsePayload));
+        }
+
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            return JSON.parse(decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join('')));
+        }
+
+        function googleLogout() {
+            localStorage.removeItem('userLoggedIn');
+            location.reload();
+        }
+
+        // استرجاع جلسة التسجيل إن وجدت
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('userLoggedIn'));
+            if(user) {
+                document.querySelector('.g_id_signin').classList.add('hidden');
+                document.getElementById('userProfile').classList.remove('hidden');
+                document.getElementById('userName').innerText = user.name;
+                document.getElementById('userAvatar').src = user.picture;
+            }
+        }
     </script>
 </body>
-</html>
+    </html>
+    
