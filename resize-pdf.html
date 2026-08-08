@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تغيير حجم صفحات PDF مجاناً - PDF Toolbox</title>
+    <meta name="description" content="قم بتغيير أبعاد ومقاسات صفحات الـ PDF الخاصة بك إلى A4 أو Letter أو A3 مجاناً أونلاين وبأمان تام.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">📏</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة تغيير حجم صفحات الـ PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">قم بتعديل مقاسات الصفحات لتلائم معايير الطباعة القياسية مثل A4 أو Letter.</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-8 text-center">
+                <input type="file" id="pdfFile" accept="application/pdf" class="hidden" onchange="handleFileSelection(event)">
+                <button onclick="document.getElementById('pdfFile').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار ملف PDF</button>
+                <p id="fileStatusText" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+
+                <div id="sizeOptions" class="mt-6 hidden max-w-sm mx-auto text-right space-y-2">
+                    <label class="block text-xs font-medium text-slate-300">اختر الحجم الجديد للصفحات:</label>
+                    <select id="pageSize" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500">
+                        <option value="A4" selected>A4 (595 x 842 pt)</option>
+                        <option value="Letter">Letter (612 x 792 pt)</option>
+                        <option value="A3">A3 (842 x 1191 pt)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="resizeBtn" onclick="processResizePDF()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto hover:opacity-90 transition">
+                تغيير الحجم وتحميل الملف 🚀
+            </button>
+        </div>
+
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">أهمية توحيد مقاسات الصفحات</h2>
+            <p>يساعد توحيد أبعاد مستندات الـ PDF على تجنب أخطاء الهوامش أثناء الطباعة وضمان ظهور الورق بشكل متناسق عند التصدير للعمل أو الدراسة.</p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        let selectedFile = null;
+
+        function handleFileSelection(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                selectedFile = files[0];
+                document.getElementById('fileStatusText').innerText = `تم اختيار: ${selectedFile.name}`;
+                document.getElementById('sizeOptions').classList.remove('hidden');
+                document.getElementById('resizeBtn').classList.remove('hidden');
+            }
+        }
+
+        async function processResizePDF() {
+            if (!selectedFile) return;
+
+            const targetSize = document.getElementById('pageSize').value;
+            const btn = document.getElementById('resizeBtn');
+            btn.innerText = "جاري تعديل الحجم... ⏳";
+            btn.disabled = true;
+
+            try {
+                const { PDFDocument, PageSizes } = PDFLib;
+                const fileBytes = await selectedFile.arrayBuffer();
+                const srcDoc = await PDFDocument.load(fileBytes);
+                const pdfDoc = await PDFDocument.create();
+
+                const dimensions = targetSize === 'Letter' ? PageSizes.Letter : (targetSize === 'A3' ? PageSizes.A3 : PageSizes.A4);
+
+                const pages = await pdfDoc.copyPages(srcDoc, srcDoc.getPageIndices());
+                pages.forEach(page => {
+                    page.setSize(dimensions[0], dimensions[1]);
+                    pdfDoc.addPage(page);
+                });
+
+                const pdfBytes = await pdfDoc.save();
+                download(pdfBytes, "Resized_Document.pdf", "application/pdf");
+
+                document.getElementById('fileStatusText').innerText = "✅ تم تغيير مقاسات الصفحات وتحميل الملف بنجاح!";
+            } catch (err) {
+                alert("حدث خطأ أثناء معالجة المستند.");
+                console.error(err);
+            } finally {
+                btn.innerText = "تغيير الحجم وتحميل الملف 🚀";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
