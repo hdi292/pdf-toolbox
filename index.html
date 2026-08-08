@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Toolbox - منصة أدوات الـ PDF الشاملة</title>
+    <title id="pageTitle">PDF Toolbox - المنصة الشاملة لأدوات الـ PDF</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
@@ -18,152 +18,178 @@
     <!-- Header -->
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-black flex items-center gap-2">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
                 <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
             </a>
-            <span class="text-xs bg-indigo-950 border border-indigo-700 text-indigo-300 font-bold px-3 py-1 rounded-full">40 أداة متاحة</span>
+            <a href="index.html" id="homeLink" class="text-xs bg-indigo-950 border border-indigo-700 text-indigo-300 font-bold px-4 py-1.5 rounded-full hover:bg-indigo-900 transition">الرئيسية (40 أداة)</a>
         </div>
     </header>
 
-    <!-- Hero -->
-    <section class="py-12 text-center px-4 max-w-4xl mx-auto">
-        <h1 class="text-3xl md:text-5xl font-black mt-2 mb-4 leading-tight">
-            مركز <span class="gradient-text">أدوات الـ PDF</span> الشامل
-        </h1>
-        <p class="text-slate-400 text-base md:text-lg mb-6">
-            أدوات مجانية بالكامل، آمنة ومستقلة تعمل في متصفحك مباشرة لحماية مستنداتك.
-        </p>
-        <input type="text" id="search" onkeyup="filter()" placeholder="🔍 ابحث عن الأداة المطلوبة (مثال: دمج، صور، ضغط)..." class="w-full max-w-lg px-6 py-3.5 rounded-2xl bg-slate-800/80 border border-slate-700 text-slate-200 focus:outline-none focus:border-indigo-500 shadow-2xl">
-    </section>
+    <!-- الواجهة الرئيسية (تظهر عندما لا توجد أداة محددة) -->
+    <div id="mainCatalog">
+        <section class="py-12 text-center px-4 max-w-4xl mx-auto">
+            <h1 class="text-3xl md:text-5xl font-black mt-2 mb-4 leading-tight">
+                مركز <span class="gradient-text">أدوات الـ PDF</span> الشامل
+            </h1>
+            <p class="text-slate-400 text-base md:text-lg mb-6">
+                40 أداة مجانية بالكامل، آمنة ومستقلة تعمل داخل متصفحك مباشرة لحماية مستنداتك.
+            </p>
+            <input type="text" id="search" onkeyup="filterTools()" placeholder="🔍 ابحث عن أداة (مثال: دمج، Word، ضغط)..." class="w-full max-w-lg px-6 py-3.5 rounded-2xl bg-slate-800/80 border border-slate-700 text-slate-200 focus:outline-none focus:border-indigo-500 shadow-2xl">
+        </section>
 
-    <!-- Workspace Modal / منطقة عمل الأداة النشطة -->
-    <div id="toolWorkspace" class="hidden max-w-4xl mx-auto my-6 p-6 bg-slate-900 border border-indigo-500/50 rounded-3xl shadow-2xl">
-        <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
-            <h3 id="activeToolTitle" class="text-xl font-bold text-indigo-400">اسم الأداة</h3>
-            <button onclick="closeWorkspace()" class="text-slate-400 hover:text-white font-bold text-xl">✕</button>
-        </div>
-        
-        <div class="border-2 border-dashed border-indigo-500/40 bg-indigo-950/20 rounded-2xl p-8 text-center" id="dropArea">
-            <div class="text-4xl mb-3">📁</div>
-            <p class="text-lg font-semibold text-slate-200 mb-1">اختر الملفات من جهازك</p>
-            <p class="text-xs text-slate-400 mb-4">يتم معالجة الملفات محلياً على جهازك لضمان أمان خصوصيتك</p>
-            <input type="file" id="fileInput" multiple class="hidden" onchange="handleFileSelect(event)">
-            <button onclick="document.getElementById('fileInput').click()" class="bg-indigo-600 text-white px-8 py-3 rounded-xl hover:bg-indigo-500 transition font-bold shadow-lg">تصفح الملفات</button>
-            <p id="fileStatus" class="mt-4 text-sm font-semibold text-indigo-300"></p>
-        </div>
-
-        <div class="mt-6 text-center">
-            <button id="processBtn" onclick="executePDFAction()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-10 py-3.5 rounded-xl hover:opacity-90 transition font-bold text-lg shadow-xl hidden">
-                بدء التنفيذ وتحميل الملف 🚀
-            </button>
-        </div>
-
-        <!-- مقال الشرح التلقائي للأداة للـ SEO وأدسينس -->
-        <div class="mt-8 pt-6 border-t border-slate-800 text-slate-300 text-sm text-right leading-relaxed">
-            <h4 class="font-bold text-indigo-400 text-base mb-2">تعليمات الاستخدام والأمان:</h4>
-            <p id="toolGuide">تتيح لك هذه الأداة المعالجة السريعة والآمنة للمستندات مجاناً دون الحاجة لتنزيل أية برامج أو تسجيل حساب.</p>
-        </div>
+        <!-- شبكة الـ 40 أداة -->
+        <main class="max-w-7xl mx-auto px-6 py-4 flex-grow w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="toolsGrid"></div>
+        </main>
     </div>
 
-    <!-- 40 Tools Grid -->
-    <main id="tools" class="max-w-7xl mx-auto px-6 py-4 flex-grow w-full">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="grid">
-            
-            <div onclick="openTool('دمج ملفات PDF', 'merge')" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover cursor-pointer">
-                <div class="text-3xl mb-2">🧩</div>
-                <h3 class="font-bold text-white mb-1">دمج PDF</h3>
-                <p class="text-slate-400 text-xs">تجميع عدة ملفات في مستند واحد.</p>
+    <!-- الصفحة المستقلة للأداة المحددة (تظهر تلقائياً عند النقر على أي أداة) -->
+    <div id="singleToolPage" class="hidden max-w-4xl mx-auto px-4 py-10 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-8">
+            <div class="text-5xl mb-3" id="toolIcon">⚙️</div>
+            <h1 class="text-3xl font-extrabold mb-2 text-white" id="toolTitle">عنوان الأداة</h1>
+            <p class="text-slate-400 text-sm mb-8" id="toolDesc">وصف الأداة المحددة</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-10 text-center">
+                <input type="file" id="fileInput" multiple class="hidden" onchange="handleFiles(event)">
+                <button onclick="document.getElementById('fileInput').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار الملفات</button>
+                <p id="fileStatus" class="mt-4 text-sm font-semibold text-indigo-300"></p>
             </div>
 
-            <div onclick="openTool('صور JPG/PNG إلى PDF', 'imgToPdf')" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover cursor-pointer">
-                <div class="text-3xl mb-2">🖼️</div>
-                <h3 class="font-bold text-white mb-1">صور إلى PDF</h3>
-                <p class="text-slate-400 text-xs">تحويل الصور إلى مستند PDF.</p>
-            </div>
-
-            <div onclick="openTool('تقسيم ملفات PDF', 'split')" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover cursor-pointer">
-                <div class="text-3xl mb-2">✂️</div>
-                <h3 class="font-bold text-white mb-1">تقسيم PDF</h3>
-                <p class="text-slate-400 text-xs">فصل الصفحات إلى ملفات مستقلة.</p>
-            </div>
-
-            <div onclick="openTool('ضغط حجم PDF', 'compress')" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover cursor-pointer">
-                <div class="text-3xl mb-2">🗜️</div>
-                <h3 class="font-bold text-white mb-1">ضغط PDF</h3>
-                <p class="text-slate-400 text-xs">تصغير الحجم بضغطة زر.</p>
-            </div>
-
-            <div onclick="openTool('Word إلى PDF', 'wordToPdf')" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover cursor-pointer">
-                <div class="text-3xl mb-2">📝</div>
-                <h3 class="font-bold text-white mb-1">Word إلى PDF</h3>
-                <p class="text-slate-400 text-xs">تحويل مستندات Word لـ PDF.</p>
-            </div>
-
-            <div onclick="openTool('قفل وحماية PDF', 'protect')" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover cursor-pointer">
-                <div class="text-3xl mb-2">🔒</div>
-                <h3 class="font-bold text-white mb-1">قفل PDF</h3>
-                <p class="text-slate-400 text-xs">حماية بكلمة سر وتشفير.</p>
-            </div>
-
-            <div onclick="openTool('تدوير الصفحات', 'rotate')" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover cursor-pointer">
-                <div class="text-3xl mb-2">🔄</div>
-                <h3 class="font-bold text-white mb-1">تدوير الصفحات</h3>
-                <p class="text-slate-400 text-xs">تعديل اتجاه الصفحات.</p>
-            </div>
-
-            <div onclick="openTool('حذف صفحات غير مرغوبة', 'deletePages')" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover cursor-pointer">
-                <div class="text-3xl mb-2">🗑️</div>
-                <h3 class="font-bold text-white mb-1">حذف صفحات</h3>
-                <p class="text-slate-400 text-xs">إزالة صفحة أو صفحات معينة.</p>
-            </div>
-
+            <button id="processBtn" onclick="executeAction()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto">بدء التنفيذ وتحميل النتيجة 🚀</button>
         </div>
-    </main>
 
+        <!-- المقال والمدونة الشارحة المخصصة لكل أداة (قبول AdSense) -->
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300">
+            <h2 class="text-2xl font-bold text-white mb-4 border-r-4 border-indigo-500 pr-3" id="articleHeading">شرح الأداة</h2>
+            <p class="mb-4" id="articleBody">المقال الشارح...</p>
+            <h3 class="text-lg font-bold text-indigo-400 mt-6 mb-2">مميزات الاستخدام والأمان:</h3>
+            <ul class="list-disc list-inside space-y-2 text-slate-400 text-sm">
+                <li>معالجة سريعة للغاية داخل متصفحك دون إرسال البيانات لخوادم خارجية.</li>
+                <li>خدمة مجانية 100% بدون قيود على عدد المرات أو حجم الملفات.</li>
+                <li>توافق تام مع أجهزة الأندرويد، الآيفون، والكمبيوتر.</li>
+            </ul>
+        </article>
+    </div>
+
+    <!-- Footer -->
     <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
         <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
     </footer>
 
     <script>
-        let selectedFiles = [];
-        let currentMode = '';
+        // بيانات الـ 40 أداة الكاملة
+        const toolsData = [
+            { id: 'merge-pdf', title: 'دمج PDF', icon: '🧩', desc: 'دمج عدة ملفات في مستند واحد مرتب.', article: 'تُعد أداة دمج ملفات PDF الحل الفعال لتجميع الأبحاث والتقارير في مستند واحد يسهل مشاركته وطباعته.' },
+            { id: 'word-to-pdf', title: 'Word إلى PDF', icon: '📝', desc: 'تحويل مستندات Word لـ PDF.', article: 'قم بتحويل ملفات Word بأمان مع الحفاظ الكامل على التنسيق والخطوط والجداول.' },
+            { id: 'jpg-to-pdf', title: 'صور إلى PDF', icon: '🖼️', desc: 'تحويل الصور إلى مستند PDF.', article: 'تحويل صور المستندات والبطاقات بصيغ JPG و PNG إلى ملف PDF موحد.' },
+            { id: 'compress-pdf', title: 'ضغط PDF', icon: '🗜️', desc: 'تقليل حجم الملف بجودة عالية.', article: 'تقليل حجم المستندات الكبيرة ليسهل إرسالها عبر البريد الإلكتروني وتطبيقات المراسلة.' },
+            { id: 'split-pdf', title: 'تقسيم PDF', icon: '✂️', desc: 'فصل الصفحات إلى ملفات متعددة.', article: 'تقسيم الملفات الكبيرة واستخراج الصفحات المهمة فقط في ملفات مستقلة.' },
+            { id: 'excel-to-pdf', title: 'Excel إلى PDF', icon: '📊', desc: 'تحويل جداول البيانات لـ PDF.', article: 'تحويل الجداول الحسابية إلى صيغة مقفلة وجاهزة للطباعة والعرض الرسمية.' },
+            { id: 'ppt-to-pdf', title: 'PowerPoint إلى PDF', icon: '🖥️', desc: 'تحويل العروض التقديمية.', article: 'حفظ شرائح العروض التقديمية بصيغة غير قابلة للتعديل للحفاظ على التصميم.' },
+            { id: 'protect-pdf', title: 'قفل PDF', icon: '🔒', desc: 'حماية وتشفير بكلمة سر.', article: 'تشفير المستندات الحساسة بكلمة مرور لمنع الفتح أو التعديل والطباعة الغير مصرح بها.' },
+            { id: 'unlock-pdf', title: 'فك قفل PDF', icon: '🔓', desc: 'إزالة كلمة السر والتصاريح.', article: 'فك حماية الملفات وتصاريح الطباعة والتعديل للملفات الخاصة بك بسهولة.' },
+            { id: 'rotate-pdf', title: 'تدوير الصفحات', icon: '🔄', desc: 'تعديل اتجاه الصفحات.', article: 'تعديل زوايا الصفحات المقلوبة عمودياً أو أفقياً بضغطة زر.' },
+            { id: 'delete-pages', title: 'حذف صفحات', icon: '🗑️', desc: 'إزالة صفحات غير مرغوبة.', article: 'تصفية المستند وإزالة الصفحات الفارغة أو الزائدة من الملف النهائي.' },
+            { id: 'watermark-pdf', title: 'علامة مائية', icon: '💧', desc: 'إضافة شعار أو نص لحفظ الحقوق.', article: 'إدراج حقوق الملكية الفكرية أو شعار المؤسسة على صفحات الـ PDF.' },
+            { id: 'number-pages', title: 'ترقيم الصفحات', icon: '🔢', desc: 'إدراج أرقام تسلسلية.', article: 'ترقيم صفحات الأبحاث والكتب الإلكترونية في الهيدر والفوتر بأسلوب احترافي.' },
+            { id: 'sign-pdf', title: 'التوقيع الإلكتروني', icon: '✍️', desc: 'توقيع العقود والمستندات.', article: 'إضافة توقيعك الشخصي على عقود العمل واستمارات التوظيف مباشرة أونلاين.' },
+            { id: 'pdf-to-word', title: 'PDF إلى Word', icon: '📝', desc: 'تحويل لنصوص قابلة للتعديل.', article: 'استخراج النصوص من ملفات الـ PDF وتنسيقها داخل مستند Word قابل للتعديل.' },
+            { id: 'pdf-to-jpg', title: 'PDF إلى JPG', icon: '🌄', desc: 'تحويل الصفحات لصور عالية الجودة.', article: 'حفظ كل صفحة داخل ملف الـ PDF كصورة عالية الوضوح مجاناً.' },
+            { id: 'txt-to-pdf', title: 'TXT إلى PDF', icon: '📄', desc: 'تحويل النصوص المباشرة.', article: 'تحويل المفكرات والنصوص العادية إلى مستندات PDF منسقة.' },
+            { id: 'html-to-pdf', title: 'HTML إلى PDF', icon: '🌐', desc: 'حفظ صفحة ويب كملف PDF.', article: 'تحويل روابط ومحتوى الويب إلى مستندات قابلة للقراءة دون إنترنت.' },
+            { id: 'pdf-to-excel', title: 'PDF إلى Excel', icon: '📊', desc: 'استخراج الجداول للحسابات.', article: 'تحويل الجداول الصماء إلى كشوفات Excel حقيقية قابلة للتحليل والمحاسبة.' },
+            { id: 'pdf-to-ppt', title: 'PDF إلى PowerPoint', icon: '🖥️', desc: 'تحويل لشرائح عرض.', article: 'تحويل صفحات المستند إلى شرائح عرض تقديمية تفاعلية.' },
+            { id: 'pdf-to-png', title: 'PDF إلى PNG', icon: '🖼️', desc: 'صور خلفية شفافة عالية الجودة.', article: 'تحويل صفحات الـ PDF إلى صور بدقة فورية وبخلفيات شفافة عند الحاجة.' },
+            { id: 'pdf-to-txt', title: 'PDF إلى TXT', icon: '📝', desc: 'استخراج النص الخالي من التنسيق.', article: 'نسخ واستخراج كافة النصوص من الملف وتصديرها بملف نصي بسيط.' },
+            { id: 'extract-images', title: 'استخراج الصور', icon: '🖼️', desc: 'حفظ جميع الصور من الملف.', article: 'استخراج وتنزيل كافة الصور المضمنة داخل صفحات الـ PDF دفعة واحدة.' },
+            { id: 'reorder-pages', title: 'ترتيب الصفحات', icon: '🔄', desc: 'إعادة تنظيم تسلسل المستند.', article: 'تغيير أماكن الصفحات وسحبها لإعادة ترتيب هيكل المستند النهائي.' },
+            { id: 'extract-pages', title: 'استخراج صفحات', icon: '📌', desc: 'حفظ نطاق محدد من الصفحات.', article: 'قص مجموعة محددة من الصفحات وحفظها كملف مستقل دون باقي الأوراق.' },
+            { id: 'crop-pdf', title: 'قص الهوامش', icon: '✂️', desc: 'تعديل حدود وحواف الأوراق.', article: 'تعديل أحجام الهوامش الخارجية لتناسب القراءة على الهواتف والأجهزة الكفية.' },
+            { id: 'annotate-pdf', title: 'ملاحظات وتعليقات', icon: '🖍️', desc: 'الكتابة والتظليل على PDF.', article: 'إضافة التعليقات التوضيحية وتظليل النصوص المهمة أثناء المذاكرة والمراجعة.' },
+            { id: 'repair-pdf', title: 'إصلاح ملفات PDF', icon: '🛠️', desc: 'معالجة الملفات التالفة.', article: 'محاولة استرجاع البيانات وإصلاح الهيكلية التالفة لملفات الـ PDF التي لا تفتح.' },
+            { id: 'compare-pdf', title: 'مقارنة ملفين', icon: '⚖️', desc: 'إظهار التعديلات والفروقات.', article: 'مقارنة مستندين وإبراز التغييرات بين النسخة القديمة والحديثة.' },
+            { id: 'ocr-pdf', title: 'استخراج النصوص OCR', icon: '🔍', desc: 'تحويل الممسوح ضوئياً لنص.', article: 'التعرف الضوئي على الحروف وتحويل أوراق السكانر الممسوحة لنصوص حقيقية.' },
+            { id: 'webp-to-pdf', title: 'WEBP إلى PDF', icon: '🌐', desc: 'تحويل صور الويب الحديثة.', article: 'تحويل صيغ صور الويب الحديثة WEBP إلى ملفات PDF سريعة.' },
+            { id: 'svg-to-pdf', title: 'SVG إلى PDF', icon: '🎨', desc: 'تحويل الرسومات الموجهة.', article: 'تحويل التصاميم الموجهة والشعارات بصيغة SVG إلى مستندات PDF عالية الجودة.' },
+            { id: 'epub-to-pdf', title: 'EPUB إلى PDF', icon: '📚', desc: 'تحويل الكتب الإلكترونية.', article: 'تحويل صيغ الكتب الإلكترونية الخاصة بالمرقمات لقراءتها على كافة الأجهزة.' },
+            { id: 'tiff-to-pdf', title: 'TIFF إلى PDF', icon: '🖼️', desc: 'تحويل الصور عالية الجودة.', article: 'دمج وتنسيق أوراق الماسح الضوئي بصيغة TIFF داخل ملف PDF واحد.' },
+            { id: 'pdf-to-html', title: 'PDF إلى HTML', icon: '🌐', desc: 'تحويل لصفحات ويب.', article: 'تحويل المستندات لكود HTML جاهز للعرض والنشر على المواقع.' },
+            { id: 'pdf-to-svg', title: 'PDF إلى SVG', icon: '🎨', desc: 'رسومات ومتجهات منسقة.', article: 'استخراج الصفحات كرسومات متجهية قابلة للتعديل على برامج التصميم.' },
+            { id: 'pdf-to-epub', title: 'PDF إلى EPUB', icon: '📚', desc: 'تحويل لصيغة قارئ الكتب.', article: 'تحويل كتب الـ PDF لتناسب تطبيقات القراءة الذكية Kindle وتطبيقات الجوال.' },
+            { id: 'pdf-to-rtf', title: 'PDF إلى RTF', icon: '📝', desc: 'نصوص منسقة بالكامل.', article: 'تصدير المستند بصيغة RTF للتعديل عبر معالجات النصوص المختلفة.' },
+            { id: 'n-up-pdf', title: 'صفحات متعددة برقعة', icon: '📖', desc: 'تجميع 2 أو 4 صفحات بصفحة.', article: 'طباعة وتجميع عدة صفحات في ورقة A4 واحدة لتوفير الحبر والورق.' },
+            { id: 'redact-pdf', title: 'طمس النصوص الحساسة', icon: '⬛', desc: 'إخفاء البيانات السرية للأبد.', article: 'تغطية وطمس الأرقام السرية والبيانات الشخصية لضمان عدم الاطلاع عليها.' }
+        ];
 
-        function openTool(title, mode) {
-            currentMode = mode;
-            document.getElementById('activeToolTitle').innerText = title;
-            document.getElementById('toolWorkspace').classList.remove('hidden');
-            document.getElementById('toolWorkspace').scrollIntoView({ behavior: 'smooth' });
+        let loadedFiles = [];
+
+        // تشغيل الصفحة وتحميل الأداة المناسبة حسب الرابط
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toolId = urlParams.get('tool');
+
+            if (toolId) {
+                const tool = toolsData.find(t => t.id === toolId);
+                if (tool) {
+                    showSingleTool(tool);
+                    return;
+                }
+            }
+            renderMainCatalog();
+        };
+
+        function renderMainCatalog() {
+            document.getElementById('mainCatalog').classList.remove('hidden');
+            document.getElementById('singleToolPage').classList.add('hidden');
+            const grid = document.getElementById('toolsGrid');
+            grid.innerHTML = '';
+
+            toolsData.forEach(tool => {
+                grid.innerHTML += `
+                    <a href="index.html?tool=${tool.id}" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                        <div class="text-3xl mb-2">${tool.icon}</div>
+                        <h3 class="font-bold text-white mb-1">${tool.title}</h3>
+                        <p class="text-slate-400 text-xs">${tool.desc}</p>
+                    </a>
+                `;
+            });
         }
 
-        function closeWorkspace() {
-            document.getElementById('toolWorkspace').classList.add('hidden');
-            selectedFiles = [];
-            document.getElementById('fileStatus').innerText = '';
-            document.getElementById('processBtn').classList.add('hidden');
+        function showSingleTool(tool) {
+            document.getElementById('mainCatalog').classList.add('hidden');
+            document.getElementById('singleToolPage').classList.remove('hidden');
+            
+            document.getElementById('pageTitle').innerText = `${tool.title} - PDF Toolbox`;
+            document.getElementById('toolTitle').innerText = tool.title;
+            document.getElementById('toolIcon').innerText = tool.icon;
+            document.getElementById('toolDesc').innerText = tool.desc;
+            document.getElementById('articleHeading').innerText = `كيفية استخدام أداة ${tool.title}؟`;
+            document.getElementById('articleBody').innerText = tool.article;
         }
 
-        function handleFileSelect(e) {
-            selectedFiles = Array.from(e.target.files);
-            if(selectedFiles.length > 0) {
-                document.getElementById('fileStatus').innerText = `تم اختيار (${selectedFiles.length}) ملف جاهز.`;
+        function handleFiles(e) {
+            loadedFiles = Array.from(e.target.files);
+            if(loadedFiles.length > 0) {
+                document.getElementById('fileStatus').innerText = `تم تحديد (${loadedFiles.length}) ملف جاهز.`;
                 document.getElementById('processBtn').classList.remove('hidden');
             }
         }
 
-        async function executePDFAction() {
-            if(selectedFiles.length === 0) return;
+        async function executeAction() {
+            if(loadedFiles.length === 0) return;
             const { PDFDocument } = PDFLib;
             const newPdf = await PDFDocument.create();
 
-            for (let file of selectedFiles) {
+            for (let file of loadedFiles) {
                 if (file.type === 'application/pdf') {
-                    const fileData = await file.arrayBuffer();
-                    const pdf = await PDFDocument.load(fileData);
+                    const bytes = await file.arrayBuffer();
+                    const pdf = await PDFDocument.load(bytes);
                     const copiedPages = await newPdf.copyPages(pdf, pdf.getPageIndices());
                     copiedPages.forEach((page) => newPdf.addPage(page));
                 } else if (file.type.includes('image')) {
-                    const fileData = await file.arrayBuffer();
-                    let image = file.type.includes('png') ? await newPdf.embedPng(fileData) : await newPdf.embedJpg(fileData);
+                    const bytes = await file.arrayBuffer();
+                    let image = file.type.includes('png') ? await newPdf.embedPng(bytes) : await newPdf.embedJpg(bytes);
                     const page = newPdf.addPage([image.width, image.height]);
                     page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
                 }
@@ -173,7 +199,7 @@
             download(pdfBytes, "PDF_Toolbox_Result.pdf", "application/pdf");
         }
 
-        function filter() {
+        function filterTools() {
             let val = document.getElementById('search').value.toLowerCase();
             let cards = document.getElementsByClassName('tool-card');
             for (let c of cards) {
@@ -182,4 +208,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+    
