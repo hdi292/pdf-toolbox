@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pdf-toolbox-blond.vercel.app/sitemap.xml
