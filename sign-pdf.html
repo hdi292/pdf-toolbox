@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>توقيع ملفات PDF أونلاين مجاناً - PDF Toolbox</title>
+    <meta name="description" content="قم بإضافة توقيعك اليدوي أو الإلكتروني على ملفات الـ PDF الخاصة بك مجاناً أونلاين وبأمان تام داخل متصفحك.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <!-- App Section -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">✍️</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة التوقيع الإلكتروني على الـ PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">ارسم توقيعك بيدك على الشاشة وأدرجه مباشرةً داخل وثيقتك بضغطة زر.</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-8 text-center">
+                <input type="file" id="pdfFile" accept="application/pdf" class="hidden" onchange="handleFileSelection(event)">
+                <button onclick="document.getElementById('pdfFile').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار ملف PDF</button>
+                <p id="fileStatusText" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+
+                <!-- Signature Pad -->
+                <div id="signatureArea" class="mt-6 hidden max-w-md mx-auto text-right">
+                    <label class="block text-sm font-medium text-slate-300 mb-2">ارسم توقيعك هنا:</label>
+                    <div class="bg-white rounded-xl overflow-hidden border border-slate-600">
+                        <canvas id="sigCanvas" width="400" height="160" class="w-full cursor-crosshair touch-none"></canvas>
+                    </div>
+                    <div class="flex justify-between items-center mt-3">
+                        <button onclick="clearCanvas()" class="text-xs text-rose-400 hover:text-rose-300 font-bold">مسح التوقيع 🔄</button>
+                        <span class="text-xs text-slate-400">سيتم إضافة التوقيع أسفل الصفحة الأولى</span>
+                    </div>
+                </div>
+            </div>
+
+            <button id="signBtn" onclick="processPDFSignature()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto hover:opacity-90 transition">
+                إضافة التوقيع وتحميل المستند 🚀
+            </button>
+        </div>
+
+        <!-- SEO Article -->
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">أهمية التوقيع الإلكتروني على ملفات الـ PDF</h2>
+            <p>
+                يُتيح لك التوقيع الرقمي توثيق العقود والاستمارات الرسمية دون الحاجة لطباعتها ورقياً ثم إعادة مسحها ضوئياً. تُعد هذه الطريقة أسرع وأكثر توفيراً للوقت والجهد.
+            </p>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">خطوات الاستخدام:</h3>
+            <ol class="list-decimal list-inside space-y-2 text-slate-400 text-sm">
+                <li>اضغط على <strong class="text-white">"اختيار ملف PDF"</strong> وحدد المستند.</li>
+                <li>ارسم توقيعك بيدك باستخدام الماوس أو اللمس في المربع المخصص.</li>
+                <li>اضغط على <strong class="text-white">"إضافة التوقيع وتحميل المستند"</strong>.</li>
+                <li>سيتم تنزيل النسخة الموقعة باسم <code class="text-indigo-300 bg-slate-800 px-2 py-0.5 rounded">Signed_Document.pdf</code>.</li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">أمان وسرية تامة:</h3>
+            <p class="text-sm text-slate-400">
+                تتم جميع عمليات الرسم والتوقيع والتثبيت محلياً بالكامل داخل متصفحك. لا يتم حفظ توقيعك أو مستنداتك على أي سيرفرات خارجية.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        let selectedFile = null;
+        const canvas = document.getElementById('sigCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        // إعدادات الرسم
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
+        canvas.addEventListener('mousemove', (e) => { if (isDrawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } });
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
+        canvas.addEventListener('touchmove', (e) => { if (isDrawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); e.preventDefault(); } });
+        canvas.addEventListener('touchend', () => isDrawing = false);
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function handleFileSelection(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                selectedFile = files[0];
+                document.getElementById('fileStatusText').innerText = `تم اختيار: ${selectedFile.name}`;
+                document.getElementById('signatureArea').classList.remove('hidden');
+                document.getElementById('signBtn').classList.remove('hidden');
+            }
+        }
+
+        async function processPDFSignature() {
+            if (!selectedFile) return;
+
+            const btn = document.getElementById('signBtn');
+            btn.innerText = "جاري دمج التوقيع... ⏳";
+            btn.disabled = true;
+
+            try {
+                const { PDFDocument } = PDFLib;
+                const fileBytes = await selectedFile.arrayBuffer();
+                const pdfDoc = await PDFDocument.load(fileBytes);
+
+                const sigDataUrl = canvas.toDataURL('image/png');
+                const sigImage = await pdfDoc.embedPng(sigDataUrl);
+
+                const pages = pdfDoc.getPages();
+                const firstPage = pages[0];
+                const { width } = firstPage.getSize();
+
+                // رسم التوقيع أسفل منتصف الصفحة الأولى
+                firstPage.drawImage(sigImage, {
+                    x: width / 2 - 100,
+                    y: 40,
+                    width: 200,
+                    height: 80,
+                });
+
+                const signedBytes = await pdfDoc.save();
+                download(signedBytes, "Signed_Document.pdf", "application/pdf");
+
+                document.getElementById('fileStatusText').innerText = "✅ تم دمج التوقيع وتحميل المستند بنجاح!";
+            } catch (err) {
+                alert("حدث خطأ أثناء إضافة التوقيع، يرجى التأكد من رفع ملف PDF غير محمي.");
+                console.error(err);
+            } finally {
+                btn.innerText = "إضافة التوقيع وتحميل المستند 🚀";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
