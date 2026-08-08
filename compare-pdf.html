@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقارنة ملفين PDF مجاناً - PDF Toolbox</title>
+    <meta name="description" content="قارن بين ملفين PDF واعرض الفروقات والمعلومات بين النسخ المختلفة مجاناً أونلاين وبأمان تام داخل متصفحك.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <!-- App Section -->
+    <main class="max-w-5xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">🔍</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة مقارنة ملفين PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">اختر مستندين لمقارنة المواصفات وعدد الصفحات والأحجام بسهولة.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- File 1 -->
+                <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-6 text-center">
+                    <h3 class="text-lg font-bold text-indigo-300 mb-3">المستند الأول (الأصلي)</h3>
+                    <input type="file" id="pdfFile1" accept="application/pdf" class="hidden" onchange="handleFile1(event)">
+                    <button onclick="document.getElementById('pdfFile1').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2.5 rounded-xl transition shadow text-sm">اختيار الملف الأول</button>
+                    <div id="info1" class="mt-4 text-xs text-slate-300 space-y-1 hidden"></div>
+                </div>
+
+                <!-- File 2 -->
+                <div class="border-2 border-dashed border-purple-500/50 bg-purple-950/20 rounded-2xl p-6 text-center">
+                    <h3 class="text-lg font-bold text-purple-300 mb-3">المستند الثاني (المعدل)</h3>
+                    <input type="file" id="pdfFile2" accept="application/pdf" class="hidden" onchange="handleFile2(event)">
+                    <button onclick="document.getElementById('pdfFile2').click()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-xl transition shadow text-sm">اختيار الملف الثاني</button>
+                    <div id="info2" class="mt-4 text-xs text-slate-300 space-y-1 hidden"></div>
+                </div>
+            </div>
+
+            <button id="compareBtn" onclick="processCompare()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl shadow-xl hidden w-full md:w-auto hover:opacity-90 transition">
+                بدء المقارنة 🚀
+            </button>
+
+            <!-- Result Box -->
+            <div id="resultBox" class="mt-8 hidden p-6 rounded-2xl bg-slate-900/80 border border-slate-700 text-right">
+                <h3 class="text-xl font-bold text-white mb-4 border-b border-slate-800 pb-2">نتائج المقارنة:</h3>
+                <div id="resultContent" class="space-y-3 text-sm text-slate-300"></div>
+            </div>
+        </div>
+
+        <!-- SEO Article -->
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">أهمية مقارنة مستندات الـ PDF</h2>
+            <p>
+                تُعتبر أداة مقارنة المستندات ميزة أساسية للمحامين والطلاب والمدققين للتأكد من التغييرات التي طرأت بين نسخ العقود أو المسودات المختلفة قبل اعتمادها رسميًا.
+            </p>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">خطوات الاستخدام:</h3>
+            <ol class="list-decimal list-inside space-y-2 text-slate-400 text-sm">
+                <li>اختر المستند الأول (النسخة الأصلية).</li>
+                <li>اختر المستند الثاني (النسخة المعدلة).</li>
+                <li>اضغط على زر <strong class="text-white">"بدء المقارنة"</strong> لمراجعة الفروقات بين الملفين.</li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">خصوصية تامة:</h3>
+            <p class="text-sm text-slate-400">
+                تتم المقارنة بالكامل داخل متصفحك دون رفع المستندات إلى أي خادم خارجي.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        let file1 = null, file2 = null;
+        let pdf1Doc = null, pdf2Doc = null;
+
+        async function handleFile1(e) {
+            if (e.target.files.length > 0) {
+                file1 = e.target.files[0];
+                const bytes = await file1.arrayBuffer();
+                pdf1Doc = await PDFLib.PDFDocument.load(bytes);
+                
+                const info = document.getElementById('info1');
+                info.innerHTML = `<p><b>الاسم:</b> ${file1.name}</p><p><b>الحجم:</b> ${(file1.size / 1024).toFixed(1)} KB</p><p><b>الصفحات:</b> ${pdf1Doc.getPageCount()}</p>`;
+                info.classList.remove('hidden');
+                checkReady();
+            }
+        }
+
+        async function handleFile2(e) {
+            if (e.target.files.length > 0) {
+                file2 = e.target.files[0];
+                const bytes = await file2.arrayBuffer();
+                pdf2Doc = await PDFLib.PDFDocument.load(bytes);
+
+                const info = document.getElementById('info2');
+                info.innerHTML = `<p><b>الاسم:</b> ${file2.name}</p><p><b>الحجم:</b> ${(file2.size / 1024).toFixed(1)} KB</p><p><b>الصفحات:</b> ${pdf2Doc.getPageCount()}</p>`;
+                info.classList.remove('hidden');
+                checkReady();
+            }
+        }
+
+        function checkReady() {
+            if (file1 && file2) {
+                document.getElementById('compareBtn').classList.remove('hidden');
+            }
+        }
+
+        function processCompare() {
+            const count1 = pdf1Doc.getPageCount();
+            const count2 = pdf2Doc.getPageCount();
+            const size1 = file1.size;
+            const size2 = file2.size;
+
+            let html = '';
+
+            if (count1 === count2) {
+                html += `<p class="text-emerald-400">✅ يتطابق الملفان في عدد الصفحات (${count1} صفحة).</p>`;
+            } else {
+                html += `<p class="text-amber-400">⚠️ الاختلاف في عدد الصفحات: الملف الأول يضم ${count1} صفحة، والملف الثاني يضم ${count2} صفحة.</p>`;
+            }
+
+            const sizeDiff = ((size2 - size1) / 1024).toFixed(1);
+            if (sizeDiff > 0) {
+                html += `<p class="text-slate-300">ℹ️ الملف الثاني أكبر بحوالي ${sizeDiff} KB من الملف الأول.</p>`;
+            } else if (sizeDiff < 0) {
+                html += `<p class="text-slate-300">ℹ️ الملف الثاني أصغر بحوالي ${Math.abs(sizeDiff)} KB من الملف الأول.</p>`;
+            } else {
+                html += `<p class="text-emerald-400">✅ الملفان متطابقان تمامًا في الحجم.</p>`;
+            }
+
+            document.getElementById('resultContent').innerHTML = html;
+            document.getElementById('resultBox').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
