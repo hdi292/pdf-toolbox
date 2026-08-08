@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعادة ترتيب صفحات PDF مجاناً - PDF Toolbox</title>
+    <meta name="description" content="قم بعكس وإعادة تنظيم ترتيب صفحات ملفات الـ PDF الخاصة بك مجاناً أونلاين وبأمان تام داخل متصفحك.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <!-- App Section -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">🔄</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة إعادة ترتيب صفحات الـ PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">قم بعكس ترتيب صفحات المستند لتعديل تسلسل الأوراق بضغطة زر.</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-10 text-center">
+                <input type="file" id="pdfFile" accept="application/pdf" class="hidden" onchange="handleFileSelection(event)">
+                <button onclick="document.getElementById('pdfFile').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار ملف PDF</button>
+                <p id="fileStatusText" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+            </div>
+
+            <button id="reorderBtn" onclick="processPDFReorder()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto hover:opacity-90 transition">
+                عكس ترتيب الصفحات وتحميل المستند 🚀
+            </button>
+        </div>
+
+        <!-- SEO Article -->
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">أهمية إعادة تنظيم صفحات الـ PDF</h2>
+            <p>
+                تحدث أخطاء أثناء تصوير المستندات بالماسح الضوئي (Scanner) مما يؤدي إلى ترتيب الأوراق بشكل معكوس. تُساعدك هذه الأداة على ضبط الهيكلية وعكس الترتيب بسرعة فائقة.
+            </p>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">خطوات الاستخدام:</h3>
+            <ol class="list-decimal list-inside space-y-2 text-slate-400 text-sm">
+                <li>اضغط على زر <strong class="text-white">"اختيار ملف PDF"</strong> وحدد مستندك.</li>
+                <li>اضغط على زر <strong class="text-white">"عكس ترتيب الصفحات وتحميل المستند"</strong>.</li>
+                <li>سيتم تحميل المستند المعدل باسم <code class="text-indigo-300 bg-slate-800 px-2 py-0.5 rounded">Reordered_Document.pdf</code>.</li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">معالجة آمنة ومحلية:</h3>
+            <p class="text-sm text-slate-400">
+                تنفذ العملية بالكامل داخل المتصفح لضمان أمان وخصوصية مستنداتك الشخصية.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        let selectedFile = null;
+
+        function handleFileSelection(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                selectedFile = files[0];
+                document.getElementById('fileStatusText').innerText = `تم اختيار: ${selectedFile.name}`;
+                document.getElementById('reorderBtn').classList.remove('hidden');
+            }
+        }
+
+        async function processPDFReorder() {
+            if (!selectedFile) return;
+
+            const btn = document.getElementById('reorderBtn');
+            btn.innerText = "جاري إعادة ترتيب الصفحات... ⏳";
+            btn.disabled = true;
+
+            try {
+                const { PDFDocument } = PDFLib;
+                const fileBytes = await selectedFile.arrayBuffer();
+                const srcPdf = await PDFDocument.load(fileBytes);
+                const newPdf = await PDFDocument.create();
+
+                const totalPages = srcPdf.getPageCount();
+                const reversedIndices = Array.from({ length: totalPages }, (_, i) => totalPages - 1 - i);
+
+                const copiedPages = await newPdf.copyPages(srcPdf, reversedIndices);
+                copiedPages.forEach(page => newPdf.addPage(page));
+
+                const reorderedBytes = await newPdf.save();
+                download(reorderedBytes, "Reordered_Document.pdf", "application/pdf");
+
+                document.getElementById('fileStatusText').innerText = "✅ تم إعادة ترتيب الصفحات وتحميل الملف بنجاح!";
+            } catch (err) {
+                alert("حدث خطأ أثناء معالجة الملف، يرجى التأكد من رفع ملف PDF غير محمي.");
+                console.error(err);
+            } finally {
+                btn.innerText = "عكس ترتيب الصفحات وتحميل المستند 🚀";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
