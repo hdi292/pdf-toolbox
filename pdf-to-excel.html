@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحويل PDF إلى Excel مجاناً - PDF Toolbox</title>
+    <meta name="description" content="قم باستخراج الجداول والبيانات من ملفات الـ PDF وتحويلها إلى جداول بيانات Excel القابلة للتعديل مجاناً وبأمان تام.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <!-- App Section -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">📈</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة تحويل الـ PDF إلى Excel</h1>
+            <p class="text-slate-400 text-sm mb-8">قم باستخراج الجداول الحسابية والبيانات من مستند PDF وتصديرها كملف Excel.</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-10 text-center">
+                <input type="file" id="pdfFile" accept="application/pdf" class="hidden" onchange="handleFileSelection(event)">
+                <button onclick="document.getElementById('pdfFile').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار ملف PDF</button>
+                <p id="fileStatusText" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+            </div>
+
+            <button id="convertBtn" onclick="processPDFToExcel()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto hover:opacity-90 transition">
+                تحويل لـ Excel وتحميل الجدول 🚀
+            </button>
+        </div>
+
+        <!-- SEO Article -->
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">أهمية تحويل ملفات الـ PDF إلى Excel</h2>
+            <p>
+                تُساعدك هذه الأداة على نقل البيانات والجداول المالية والإحصائية من ملفات الـ PDF مباشرة إلى برنامج Excel لإجراء الحسابات والتحليلات دون الحاجة إلى إعادة إدخال البيانات يدوياً.
+            </p>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">خطوات الاستخدام:</h3>
+            <ol class="list-decimal list-inside space-y-2 text-slate-400 text-sm">
+                <li>اضغط على زر <strong class="text-white">"اختيار ملف PDF"</strong> وحدد المستند الذي يحتوي الجداول.</li>
+                <li>اضغط على زر <strong class="text-white">"تحويل لـ Excel وتحميل الجدول"</strong>.</li>
+                <li>سيتم تصدير البيانات إلى جدول وتحميله باسم <code class="text-indigo-300 bg-slate-800 px-2 py-0.5 rounded">Converted_Table.csv</code>.</li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">معالجة آمنة وسريعة:</h3>
+            <p class="text-sm text-slate-400">
+                تُنفذ معالجة البيانات بالكامل محلياً داخل متصفحك للحفاظ على السرية التامة للمستندات والبيانات الحساسة.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+        let selectedFile = null;
+
+        function handleFileSelection(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                selectedFile = files[0];
+                document.getElementById('fileStatusText').innerText = `تم اختيار: ${selectedFile.name}`;
+                document.getElementById('convertBtn').classList.remove('hidden');
+            }
+        }
+
+        async function processPDFToExcel() {
+            if (!selectedFile) return;
+
+            const btn = document.getElementById('convertBtn');
+            btn.innerText = "جاري استخراج البيانات للجداول... ⏳";
+            btn.disabled = true;
+
+            try {
+                const arrayBuffer = await selectedFile.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                let csvContent = "";
+
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    
+                    let line = [];
+                    let lastY = null;
+
+                    for (const item of textContent.items) {
+                        if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
+                            csvContent += line.join(",") + "\n";
+                            line = [];
+                        }
+                        line.push(`"${item.str.replace(/"/g, '""')}"`);
+                        lastY = item.transform[5];
+                    }
+                    if (line.length > 0) {
+                        csvContent += line.join(",") + "\n";
+                    }
+                }
+
+                const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
+                download(blob, "Converted_Table.csv", "text/csv");
+                document.getElementById('fileStatusText').innerText = "✅ تم استخراج البيانات وتحميل ملف Excel بنجاح!";
+
+            } catch (err) {
+                alert("حدث خطأ أثناء استخراج البيانات، يرجى التأكد من رفع ملف PDF يحتوي على نصوص قابلة للقراءة.");
+                console.error(err);
+            } finally {
+                btn.innerText = "تحويل لـ Excel وتحميل الجدول 🚀";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
