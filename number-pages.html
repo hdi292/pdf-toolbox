@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ترقيم صفحات PDF مجاناً - PDF Toolbox</title>
+    <meta name="description" content="قم بإدراج أرقام تسلسلية لصفحات ملفات الـ PDF الخاصة بك مجاناً أونلاين وبأمان تام داخل متصفحك.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <!-- App Section -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">🔢</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة ترقيم صفحات الـ PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">إدراج أرقام تسلسلية في تذييل الصفحات لتنظيم الأبحاث والكتب بضغطة زر.</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-10 text-center">
+                <input type="file" id="pdfFile" accept="application/pdf" class="hidden" onchange="handleFileSelection(event)">
+                <button onclick="document.getElementById('pdfFile').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار ملف PDF</button>
+                <p id="fileStatusText" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+            </div>
+
+            <button id="numberBtn" onclick="processPDFPageNumbering()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto hover:opacity-90 transition">
+                ترقيم الصفحات وتحميل المستند 🚀
+            </button>
+        </div>
+
+        <!-- SEO Article -->
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">أهمية ترقيم صفحات مستندات الـ PDF</h2>
+            <p>
+                يُعد ترقيم الصفحات خطوة أساسية عند إعداد الأبحاث الجامعية، والتقارير الماليّة، والكتب الإلكترونية، حيث يُسهل على القارئ الإشارة إلى المراجع والوصول إلى الفصول بسرعة وسلاسة.
+            </p>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">خطوات الاستخدام:</h3>
+            <ol class="list-decimal list-inside space-y-2 text-slate-400 text-sm">
+                <li>اضغط على زر <strong class="text-white">"اختيار ملف PDF"</strong> وحدد مستندك.</li>
+                <li>اضغط على زر <strong class="text-white">"ترقيم الصفحات وتحميل المستند"</strong>.</li>
+                <li>سيقوم النظام تلقائياً بطباعة رقم الصفحة في أسفل منتصف كل ورقة.</li>
+                <li>سيتم تنزيل المستند باسم <code class="text-indigo-300 bg-slate-800 px-2 py-0.5 rounded">Numbered_Document.pdf</code>.</li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">معالجة آمنة:</h3>
+            <p class="text-sm text-slate-400">
+                تتم جميع العمليات محلياً داخل المتصفح دون الحاجة لرفع المستند لأي خوادم خارجية.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        let selectedFile = null;
+
+        function handleFileSelection(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                selectedFile = files[0];
+                document.getElementById('fileStatusText').innerText = `تم اختيار: ${selectedFile.name}`;
+                document.getElementById('numberBtn').classList.remove('hidden');
+            }
+        }
+
+        async function processPDFPageNumbering() {
+            if (!selectedFile) return;
+
+            const btn = document.getElementById('numberBtn');
+            btn.innerText = "جاري ترقيم الصفحات... ⏳";
+            btn.disabled = true;
+
+            try {
+                const { PDFDocument, StandardFonts, rgb } = PDFLib;
+                const fileBytes = await selectedFile.arrayBuffer();
+                const pdfDoc = await PDFDocument.load(fileBytes);
+                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+                const pages = pdfDoc.getPages();
+                const totalPages = pages.length;
+
+                pages.forEach((page, index) => {
+                    const { width } = page.getSize();
+                    const pageText = `${index + 1} / ${totalPages}`;
+                    
+                    page.drawText(pageText, {
+                        x: width / 2 - 15,
+                        y: 20,
+                        size: 10,
+                        font: font,
+                        color: rgb(0.3, 0.3, 0.4),
+                    });
+                });
+
+                const numberedBytes = await pdfDoc.save();
+                download(numberedBytes, "Numbered_Document.pdf", "application/pdf");
+
+                document.getElementById('fileStatusText').innerText = "✅ تم ترقيم جميع الصفحات وتحميل الملف بنجاح!";
+            } catch (err) {
+                alert("حدث خطأ أثناء ترقيم الملف، يرجى التأكد من رفع ملف PDF غير محمي.");
+                console.error(err);
+            } finally {
+                btn.innerText = "ترقيم الصفحات وتحميل المستند 🚀";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+              </html>
+              
