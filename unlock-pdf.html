@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إزالة كلمة سر PDF وفك الحماية مجاناً - PDF Toolbox</title>
+    <meta name="description" content="قم بإزالة كلمة السر وفك حماية ملفات الـ PDF الخاصة بك مجاناً أونلاين وبأمان تام داخل متصفحك دون إرسال ملفاتك لأي خادم.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <!-- App Section -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">🔓</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة فك حماية وإزالة كلمة سر الـ PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">قم بفك الحماية عن مستنداتك المحمية وإزالة القيود لتسهيل الطباعة والتعديل.</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-10 text-center">
+                <input type="file" id="pdfFile" accept="application/pdf" class="hidden" onchange="handleFileSelection(event)">
+                <button onclick="document.getElementById('pdfFile').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار ملف PDF محمي</button>
+                <p id="fileStatusText" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+
+                <div id="passwordArea" class="mt-6 hidden max-w-sm mx-auto">
+                    <label class="block text-right text-xs font-medium text-slate-300 mb-2">أدخل كلمة المرور الخاصة بالملف (إن وجدت):</label>
+                    <input type="password" id="pdfPassword" placeholder="كلمة المرور..." class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500 text-center">
+                </div>
+            </div>
+
+            <button id="unlockBtn" onclick="processUnlockPDF()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto hover:opacity-90 transition">
+                فك الحماية وتحميل المستند 🔓
+            </button>
+        </div>
+
+        <!-- SEO Article -->
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">متى تحتاج إلى فك حماية ملف الـ PDF؟</h2>
+            <p>
+                تُستخدم أداة فك الحماية عندما ترغب في إزالة القيود عن المستندات المكتوبة بكلمة مرور لتسهيل فتحها مباشرة دون إدخال كلمة المرور في كل مرة، أو للتمكن من نسخ النصوص وطباعة المستند بسهولة.
+            </p>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">خطوات الاستخدام:</h3>
+            <ol class="list-decimal list-inside space-y-2 text-slate-400 text-sm">
+                <li>اضغط على زر <strong class="text-white">"اختيار ملف PDF محمي"</strong> وحدد مستندك.</li>
+                <li>أدخل كلمة المرور الحالية للمستند إذا كان يتطلب كلمة مرور للفتح.</li>
+                <li>اضغط على <strong class="text-white">"فك الحماية وتحميل المستند"</strong>.</li>
+                <li>سيتم تحميل النسخة غير المحمية باسم <code class="text-indigo-300 bg-slate-800 px-2 py-0.5 rounded">Unlocked_Document.pdf</code>.</li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">أمان وسرية تامة:</h3>
+            <p class="text-sm text-slate-400">
+                تُنفذ جميع عمليات فك التشفير داخل المتصفح محلياً بشكل كامل. لن يتم رفع مستنداتك أو كلمات المرور لأي خوادم خارجية.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        let selectedFile = null;
+
+        function handleFileSelection(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                selectedFile = files[0];
+                document.getElementById('fileStatusText').innerText = `تم اختيار: ${selectedFile.name}`;
+                document.getElementById('passwordArea').classList.remove('hidden');
+                document.getElementById('unlockBtn').classList.remove('hidden');
+            }
+        }
+
+        async function processUnlockPDF() {
+            if (!selectedFile) return;
+
+            const password = document.getElementById('pdfPassword').value;
+            const btn = document.getElementById('unlockBtn');
+            btn.innerText = "جاري فك الحماية... ⏳";
+            btn.disabled = true;
+
+            try {
+                const { PDFDocument } = PDFLib;
+                const fileBytes = await selectedFile.arrayBuffer();
+
+                // محاولة تحميل المستند باستخدام كلمة المرور الموفرة
+                const pdfDoc = await PDFDocument.load(fileBytes, { 
+                    password: password || undefined,
+                    ignoreEncryption: true 
+                });
+
+                const unlockedBytes = await pdfDoc.save();
+                download(unlockedBytes, "Unlocked_Document.pdf", "application/pdf");
+
+                document.getElementById('fileStatusText').innerText = "✅ تم فك الحماية وتحميل المستند بنجاح!";
+            } catch (err) {
+                alert("تعذر فك حماية الملف. يرجى التأكد من صحة كلمة المرور المدخلة.");
+                console.error(err);
+            } finally {
+                btn.innerText = "فك الحماية وتحميل المستند 🔓";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
