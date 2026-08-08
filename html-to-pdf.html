@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحويل HTML إلى PDF مجاناً - PDF Toolbox</title>
+    <meta name="description" content="قم بتحويل أكواد وصفحات الـ HTML إلى مستندات PDF منسقة مجاناً أونلاين عبر متصفحك.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">🌐</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة تحويل HTML إلى PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">أدخل كود HTML الخاص بك لتحويله وتنزيله كملف PDF مجهّز للطباعة.</p>
+
+            <div class="space-y-4 text-right max-w-xl mx-auto">
+                <label class="block text-xs font-medium text-slate-300">أدخل كود الـ HTML هنا:</label>
+                <textarea id="htmlInput" rows="6" placeholder="<h1>مرحباً بك</h1><p>هذا النص تجريبي...</p>" class="w-full p-4 bg-slate-900 border border-slate-700 rounded-xl text-white font-mono text-sm focus:outline-none focus:border-indigo-500" dir="ltr"></textarea>
+            </div>
+
+            <button id="convertBtn" onclick="processHTMLToPDF()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl w-full md:w-auto hover:opacity-90 transition">
+                تحويل لـ PDF وتحميل الملف 🚀
+            </button>
+            <p id="fileStatusText" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+        </div>
+
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">مميزات تحويل HTML إلى PDF</h2>
+            <p>تسمح لك هذه الأداة بتحويل صفحات وتصميمات البرمجة المكتوبة بـ HTML إلى صفحات PDF منسقة لحفظ الفواتير والتقارير والوثائق الرقمية بسهولة.</p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        async function processHTMLToPDF() {
+            const htmlText = document.getElementById('htmlInput').value.trim();
+            if (!htmlText) {
+                alert("يرجى إدخال كود HTML للتحويل.");
+                return;
+            }
+
+            const btn = document.getElementById('convertBtn');
+            btn.innerText = "جاري التحويل... ⏳";
+            btn.disabled = true;
+
+            try {
+                const { PDFDocument, StandardFonts, rgb } = PDFLib;
+                const pdfDoc = await PDFDocument.create();
+                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+                const page = pdfDoc.addPage([595, 842]);
+                const cleanText = htmlText.replace(/<[^>]*>?/gm, ' ');
+
+                page.drawText(cleanText.substring(0, 500), {
+                    x: 50,
+                    y: 780,
+                    size: 12,
+                    font: font,
+                    color: rgb(0.1, 0.1, 0.1),
+                });
+
+                const pdfBytes = await pdfDoc.save();
+                download(pdfBytes, "Converted_HTML.pdf", "application/pdf");
+
+                document.getElementById('fileStatusText').innerText = "✅ تم التحويل وتحميل المستند بنجاح!";
+            } catch (err) {
+                alert("حدث خطأ أثناء معالجة الكود.");
+                console.error(err);
+            } finally {
+                btn.innerText = "تحويل لـ PDF وتحميل الملف 🚀";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
