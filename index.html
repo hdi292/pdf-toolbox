@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Toolbox - منصة أدوات الـ PDF الاحترافية</title>
+    <title>PDF Toolbox - منصة أدوات الـ PDF الشاملة (40 أداة مجانية)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, sans-serif; }
         .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .card-hover:hover { transform: translateY(-4px); border-color: #6366F1; box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3); }
+        .card-hover:hover { transform: translateY(-3px); border-color: #6366F1; box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.25); }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -16,65 +16,242 @@
     <!-- Header -->
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-black tracking-wide flex items-center gap-2">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
                 <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
             </a>
-            <nav class="hidden md:flex gap-8 text-sm font-semibold text-slate-300">
-                <a href="#tools" class="hover:text-indigo-400 transition">جميع الأدوات</a>
-                <a href="#blog" class="hover:text-indigo-400 transition">المدونة والتعليمات</a>
-                <a href="#about" class="hover:text-indigo-400 transition">عن المنصة</a>
-            </nav>
+            <span class="text-xs bg-indigo-950 border border-indigo-700 text-indigo-300 font-bold px-3 py-1 rounded-full">40 أداة متاحة</span>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="py-20 text-center px-4 max-w-4xl mx-auto">
-        <span class="bg-indigo-950 text-indigo-300 border border-indigo-800/50 text-xs font-bold px-4 py-1.5 rounded-full">منصة معالجة المستندات الذكية 2026</span>
-        <h1 class="text-4xl md:text-6xl font-black mt-6 mb-6 leading-tight">
-            حلول <span class="gradient-text">PDF متكاملة</span> وسريعة مجاناً بالكامل
+    <!-- Hero -->
+    <section class="py-16 text-center px-4 max-w-4xl mx-auto">
+        <h1 class="text-3xl md:text-5xl font-black mt-2 mb-4 leading-tight">
+            مركز <span class="gradient-text">أدوات الـ PDF</span> الأول عالمياً
         </h1>
-        <p class="text-slate-400 text-lg mb-8 leading-relaxed">
-            استمتع بأكثر من 25 أداة احترافية لتعديل، تحويل، ودمج ملفاتك بأمان تام وبدون أي تكلفة.
+        <p class="text-slate-400 text-base md:text-lg mb-8">
+            أدوات مجانية بالكامل، آمنة ومستقلة تماماً تعمل داخل متصفحك مباشرة لحماية مستنداتك.
         </p>
-        <input type="text" id="search" onkeyup="filter()" placeholder="🔍 ابحث عن الأداة التي تبحث عنها..." class="w-full max-w-lg px-6 py-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-slate-200 focus:outline-none focus:border-indigo-500 shadow-2xl">
+        <input type="text" id="search" onkeyup="filter()" placeholder="🔍 ابحث عن الأداة المطلوبة (مثال: دمج، Word، ضغط)..." class="w-full max-w-lg px-6 py-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-slate-200 focus:outline-none focus:border-indigo-500 shadow-2xl">
     </section>
 
-    <!-- Tools Grid (تحويل لصفحات فرعية) -->
-    <main id="tools" class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full">
-        <h2 class="text-2xl font-bold mb-8 text-slate-200 border-r-4 border-indigo-500 pr-3">الأدوات الأساسية</h2>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="grid">
+    <!-- 40 Tools Grid -->
+    <main id="tools" class="max-w-7xl mx-auto px-6 py-4 flex-grow w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="grid">
             
-            <a href="merge-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl transition-all duration-300 card-hover block">
-                <div class="text-4xl mb-4">🧩</div>
-                <h3 class="text-xl font-bold text-white mb-2">دمج PDF</h3>
-                <p class="text-slate-400 text-sm">دمج عدة ملفات في مستند واحد بضغطة زر.</p>
+            <!-- 1 to 10: To PDF -->
+            <a href="word-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📝</div>
+                <h3 class="font-bold text-white mb-1">Word إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل مستندات DOCX.</p>
+            </a>
+            <a href="excel-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📊</div>
+                <h3 class="font-bold text-white mb-1">Excel إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل الجداول الحسابية.</p>
+            </a>
+            <a href="ppt-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🖥️</div>
+                <h3 class="font-bold text-white mb-1">PowerPoint إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل العروض التقديمية.</p>
+            </a>
+            <a href="jpg-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🖼️</div>
+                <h3 class="font-bold text-white mb-1">JPG/PNG إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل الصور المختلفة.</p>
+            </a>
+            <a href="txt-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📄</div>
+                <h3 class="font-bold text-white mb-1">TXT إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل النصوص المباشرة.</p>
+            </a>
+            <a href="html-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🌐</div>
+                <h3 class="font-bold text-white mb-1">HTML إلى PDF</h3>
+                <p class="text-slate-400 text-xs">حفظ مواقع الويب.</p>
+            </a>
+            <a href="webp-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🌐</div>
+                <h3 class="font-bold text-white mb-1">WEBP إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل صور الويب الحديثة.</p>
+            </a>
+            <a href="svg-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🎨</div>
+                <h3 class="font-bold text-white mb-1">SVG إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل الرسومات الموجهة.</p>
+            </a>
+            <a href="epub-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📚</div>
+                <h3 class="font-bold text-white mb-1">EPUB إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل الكتب الإلكترونية.</p>
+            </a>
+            <a href="tiff-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🖼️</div>
+                <h3 class="font-bold text-white mb-1">TIFF إلى PDF</h3>
+                <p class="text-slate-400 text-xs">تحويل الصور عالية الجودة.</p>
             </a>
 
-            <a href="jpg-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl transition-all duration-300 card-hover block">
-                <div class="text-4xl mb-4">🖼️</div>
-                <h3 class="text-xl font-bold text-white mb-2">صور إلى PDF</h3>
-                <p class="text-slate-400 text-sm">تحويل صور JPG و PNG إلى ملف PDF.</p>
+            <!-- 11 to 20: From PDF -->
+            <a href="pdf-to-word.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📝</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى Word</h3>
+                <p class="text-slate-400 text-xs">تحويل لنصوص قابلة للتعديل.</p>
+            </a>
+            <a href="pdf-to-excel.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📊</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى Excel</h3>
+                <p class="text-slate-400 text-xs">استخراج الجداول.</p>
+            </a>
+            <a href="pdf-to-ppt.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🖥️</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى PowerPoint</h3>
+                <p class="text-slate-400 text-xs">تحويل لشرائح عرض.</p>
+            </a>
+            <a href="pdf-to-jpg.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🌄</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى JPG</h3>
+                <p class="text-slate-400 text-xs">تحويل الصفحات لصور.</p>
+            </a>
+            <a href="pdf-to-png.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🖼️</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى PNG</h3>
+                <p class="text-slate-400 text-xs">صور عالية الدقة خلفية شفافة.</p>
+            </a>
+            <a href="pdf-to-txt.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📄</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى TXT</h3>
+                <p class="text-slate-400 text-xs">استخراج النص المجرد.</p>
+            </a>
+            <a href="pdf-to-html.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🌐</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى HTML</h3>
+                <p class="text-slate-400 text-xs">تحويل لصفحات ويب.</p>
+            </a>
+            <a href="pdf-to-svg.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🎨</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى SVG</h3>
+                <p class="text-slate-400 text-xs">رسومات متجهية متغيرة الحجم.</p>
+            </a>
+            <a href="pdf-to-epub.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📚</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى EPUB</h3>
+                <p class="text-slate-400 text-xs">صيغة قارئ الكتب.</p>
+            </a>
+            <a href="pdf-to-rtf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📝</div>
+                <h3 class="font-bold text-white mb-1">PDF إلى RTF</h3>
+                <p class="text-slate-400 text-xs">نصوص منسقة بالكامل.</p>
             </a>
 
-            <a href="compress-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl transition-all duration-300 card-hover block">
-                <div class="text-4xl mb-4">🗜️</div>
-                <h3 class="text-xl font-bold text-white mb-2">ضغط PDF</h3>
-                <p class="text-slate-400 text-sm">تقليل حجم الملفات مع الحفاظ على الجودة.</p>
+            <!-- 21 to 28: Merge & Organize -->
+            <a href="merge-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🧩</div>
+                <h3 class="font-bold text-white mb-1">دمج PDF</h3>
+                <p class="text-slate-400 text-xs">تجميع عدة ملفات في مستند.</p>
+            </a>
+            <a href="split-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">✂️</div>
+                <h3 class="font-bold text-white mb-1">تقسيم PDF</h3>
+                <p class="text-slate-400 text-xs">فصل الصفحات بسهولة.</p>
+            </a>
+            <a href="delete-pages.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🗑️</div>
+                <h3 class="font-bold text-white mb-1">حذف صفحات</h3>
+                <p class="text-slate-400 text-xs">إزالة صفحات غير مرغوبة.</p>
+            </a>
+            <a href="reorder-pages.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🔄</div>
+                <h3 class="font-bold text-white mb-1">ترتيب الصفحات</h3>
+                <p class="text-slate-400 text-xs">إعادة تنظيم تسلسل المستند.</p>
+            </a>
+            <a href="rotate-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🔄</div>
+                <h3 class="font-bold text-white mb-1">تدوير PDF</h3>
+                <p class="text-slate-400 text-xs">تعديل اتجاه الصفحات.</p>
+            </a>
+            <a href="extract-pages.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📌</div>
+                <h3 class="font-bold text-white mb-1">استخراج صفحات</h3>
+                <p class="text-slate-400 text-xs">حفظ نطاق محدد من الصفحات.</p>
+            </a>
+            <a href="n-up-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">📖</div>
+                <h3 class="font-bold text-white mb-1">صفحات متعددة برقعة</h3>
+                <p class="text-slate-400 text-xs">تجميع صفحتين أو 4 بصفحة واحدة.</p>
+            </a>
+            <a href="crop-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">✂️</div>
+                <h3 class="font-bold text-white mb-1">قص الهوامش (Crop)</h3>
+                <p class="text-slate-400 text-xs">تعديل حدود وحواف الأوراق.</p>
             </a>
 
-            <a href="word-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl transition-all duration-300 card-hover block">
-                <div class="text-4xl mb-4">📝</div>
-                <h3 class="text-xl font-bold text-white mb-2">Word إلى PDF</h3>
-                <p class="text-slate-400 text-sm">تحويل مستندات Word لملفات مقفلة.</p>
+            <!-- 29 to 35: Protection & Edit -->
+            <a href="protect-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🔒</div>
+                <h3 class="font-bold text-white mb-1">قفل PDF</h3>
+                <p class="text-slate-400 text-xs">حماية وتشفير بكلمة سر.</p>
+            </a>
+            <a href="unlock-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🔓</div>
+                <h3 class="font-bold text-white mb-1">فك قفل PDF</h3>
+                <p class="text-slate-400 text-xs">إزالة كلمة السر والتصاريح.</p>
+            </a>
+            <a href="watermark-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">💧</div>
+                <h3 class="font-bold text-white mb-1">علامة مائية</h3>
+                <p class="text-slate-400 text-xs">إضافة شعار أو نص لحفظ الحقوق.</p>
+            </a>
+            <a href="number-pages.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🔢</div>
+                <h3 class="font-bold text-white mb-1">ترقيم الصفحات</h3>
+                <p class="text-slate-400 text-xs">إدراج أرقام تسلسلية هيدر/فوتر.</p>
+            </a>
+            <a href="sign-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">✍️</div>
+                <h3 class="font-bold text-white mb-1">التوقيع الإلكتروني</h3>
+                <p class="text-slate-400 text-xs">توقيع العقود والمستندات.</p>
+            </a>
+            <a href="annotate-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🖍️</div>
+                <h3 class="font-bold text-white mb-1">ملاحظات وتعليقات</h3>
+                <p class="text-slate-400 text-xs">الكتابة والتظليل على PDF.</p>
+            </a>
+            <a href="redact-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">⬛</div>
+                <h3 class="font-bold text-white mb-1">طمس النصوص الحساسة</h3>
+                <p class="text-slate-400 text-xs">اخفاء البيانات السرية للأبد.</p>
             </a>
 
-            <!-- يمكن إضافة بقية الـ 28 أداة بنفس هذا التنسيق -->
+            <!-- 36 to 40: Advanced -->
+            <a href="compress-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🗜️</div>
+                <h3 class="font-bold text-white mb-1">ضغط PDF</h3>
+                <p class="text-slate-400 text-xs">تقليل الحجم بأعلى جودة.</p>
+            </a>
+            <a href="ocr-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🔍</div>
+                <h3 class="font-bold text-white mb-1">استخراج النصوص OCR</h3>
+                <p class="text-slate-400 text-xs">تحويل المستندات الممسوحة لنص.</p>
+            </a>
+            <a href="repair-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🛠️</div>
+                <h3 class="font-bold text-white mb-1">إصلاح ملفات PDF</h3>
+                <p class="text-slate-400 text-xs">معالجة وتصحيح الملفات التالفة.</p>
+            </a>
+            <a href="compare-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">⚖️</div>
+                <h3 class="font-bold text-white mb-1">مقارنة ملفين</h3>
+                <p class="text-slate-400 text-xs">إظهار التعديلات والفروقات.</p>
+            </a>
+            <a href="extract-images.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover block">
+                <div class="text-3xl mb-2">🖼️</div>
+                <h3 class="font-bold text-white mb-1">استخراج الصور</h3>
+                <p class="text-slate-400 text-xs">حفظ جميع الصور الموجودة بالملف.</p>
+            </a>
+
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800 py-8 text-center text-slate-500 text-sm mt-auto">
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
         <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
     </footer>
 
@@ -88,4 +265,5 @@
         }
     </script>
 </body>
-</html>
+                </html>
+                
