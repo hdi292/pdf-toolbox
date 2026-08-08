@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة دمج ملفات PDF مجاناً - PDF Toolbox</title>
+    <meta name="description" content="طريقة دمج عدة ملفات PDF في مستند واحد مجاناً أونلاين وبدون برامج.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900 px-6 py-4 flex justify-between items-center">
+        <a href="index.html" class="text-2xl font-black text-white">⚡ <span class="gradient-text">PDF Toolbox</span></a>
+        <a href="index.html" class="text-sm font-bold text-indigo-400 hover:underline">← العودة للرئيسية</a>
+    </header>
+
+    <!-- App / منطقة الأداة المستقلة -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl">
+            <h1 class="text-3xl font-extrabold mb-3">أداة دمج ملفات PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">اختر ملفين أو أكثر لدمجهما في ملف واحد فوراً وبأمان كامل.</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-10 text-center">
+                <input type="file" id="files" multiple accept="application/pdf" class="hidden" onchange="showFiles(event)">
+                <button onclick="document.getElementById('files').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار الملفات</button>
+                <p id="status" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+            </div>
+
+            <button id="runBtn" onclick="merge()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto">دمج الملفات وتحميل النتيجة 🚀</button>
+        </div>
+
+        <!-- Article / مدونة الشرح لتوافق Google AdSense و SEO -->
+        <article class="mt-16 bg-slate-900/40 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300">
+            <h2 class="text-2xl font-bold text-white mb-4 border-r-4 border-indigo-500 pr-3">كيفية دمج ملفات PDF أونلاين مجاناً؟</h2>
+            <p class="mb-4">
+                تُعد عملية دمج ملفات الـ PDF واحدة من أهم المهام اليومية التي يحتاجها الطلاب والموظفون لتجميع التقارير والأبحاث في ملف واحد مرتب. تتيح لك أداة PDF Toolbox إمكانية تنظيم صفحاتك وتجميعها بسرعة فائقة.
+            </p>
+
+            <h3 class="text-lg font-bold text-indigo-400 mt-6 mb-2">خطوات الاستخدام:</h3>
+            <ol class="list-decimal list-inside space-y-2 mb-6">
+                <li>اضغط على زر "اختيار الملفات" وحدد مستندات الـ PDF المراد دمجها.</li>
+                <li>اضغط على زر "دمج الملفات وتحميل النتيجة".</li>
+                <li>سيتم تحميل الملف المدمج النهائي فوراً على جهازك.</li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-indigo-400 mb-2">الأمان والخصوصية:</h3>
+            <p>
+                نحن نضمن حماية بياناتك بنسبة 100%؛ حيث تتم عملية المعالجة بالكامل داخل متصفحك دون رفع المستندات إلى أي سيرفرات خارجية.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm">
+        <p>© 2026 PDF Toolbox</p>
+    </footer>
+
+    <script>
+        let fileList = [];
+        function showFiles(e) {
+            fileList = Array.from(e.target.files);
+            if(fileList.length > 0) {
+                document.getElementById('status').innerText = `تم حديد ${fileList.length} ملفات.`;
+                document.getElementById('runBtn').classList.remove('hidden');
+            }
+        }
+
+        async function merge() {
+            const { PDFDocument } = PDFLib;
+            const finalPdf = await PDFDocument.create();
+            for(let f of fileList) {
+                const bytes = await f.arrayBuffer();
+                const doc = await PDFDocument.load(bytes);
+                const pages = await finalPdf.copyPages(doc, doc.getPageIndices());
+                pages.forEach(p => finalPdf.addPage(p));
+            }
+            const outBytes = await finalPdf.save();
+            download(outBytes, "Merged_Document.pdf", "application/pdf");
+        }
+    </script>
+</body>
+</html>
