@@ -3,145 +3,362 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Toolbox - منصة أدوات الـ PDF الشاملة والمجانية</title>
-    <meta name="description" content="أكثر من 40 أداة معالجة PDF مجانية بالكامل. دمج، ضغط، تحويل صور، وتعديل ملفاتك بأمان تام.">
+    <title>PDF Toolbox - جميع أدوات الـ PDF في مكان واحد</title>
+    <meta name="description" content="منصة متكاملة تحتوي على 40 أداة مجانية للتعامل مع ملفات PDF وسحب النصوص والتحويلات والتعديل بأمان تام داخل متصفحك.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- مكتبة تسجيل الدخول بحساب جوجل -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
         .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .card-hover:hover { transform: translateY(-4px); border-color: #6366F1; box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3); }
+        .tool-card { transition: all 0.25s ease; }
+        .tool-card:hover { transform: translateY(-4px); border-color: #818CF8; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <!-- Header / الشريط العلوي -->
+    <!-- Header -->
     <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-black flex items-center gap-2">
                 <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
             </a>
-            
-            <!-- زر تسجيل الدخول بحساب جوجل -->
-            <div id="authContainer" class="flex items-center gap-3">
-                <div id="g_id_onload"
-                    data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-                    data-callback="handleCredentialResponse">
-                </div>
-                <div class="g_id_signin" data-type="standard" data-theme="dark" data-size="medium" data-text="signin_with"></div>
-                <div id="userProfile" class="hidden flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
-                    <img id="userAvatar" class="w-7 h-7 rounded-full" src="" alt="User">
-                    <span id="userName" class="text-xs font-bold text-slate-200"></span>
-                    <button onclick="googleLogout()" class="text-xs text-rose-400 hover:underline mr-2">خروج</button>
-                </div>
-            </div>
+            <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full font-bold">40 أداة مجانية</span>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="py-14 text-center px-4 max-w-4xl mx-auto">
-        <span class="bg-indigo-950 border border-indigo-700 text-indigo-300 text-xs font-bold px-4 py-1.5 rounded-full">40 أداة متخصصة مجانية 100%</span>
-        <h1 class="text-3xl md:text-5xl font-black mt-4 mb-4 leading-tight">
-            منصة <span class="gradient-text">معالجة المستندات</span> الذكية
-        </h1>
-        <p class="text-slate-400 text-base md:text-lg mb-8">
-            قم بدمج، ضغط، وتحويل ملفاتك مباشرة عبر المتصفح وبصفحات منفصلة لكل أداة لحماية الخصوصية.
-        </p>
-        <input type="text" id="search" onkeyup="filterTools()" placeholder="🔍 ابحث عن الأداة التي تحتاجها (مثال: دمج، Word، صور)..." class="w-full max-w-lg px-6 py-3.5 rounded-2xl bg-slate-800/80 border border-slate-700 text-slate-200 focus:outline-none focus:border-indigo-500 shadow-2xl">
-    </section>
-
-    <!-- Catalog (40 Tools Grid) -->
-    <main class="max-w-7xl mx-auto px-6 py-4 flex-grow w-full">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="toolsGrid">
-            
-            <!-- الأداة 1 -->
-            <a href="merge-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
-                <div class="text-3xl mb-2">🧩</div>
-                <h3 class="font-bold text-white mb-1">دمج PDF</h3>
-                <p class="text-slate-400 text-xs">تجميع عدة ملفات في مستند واحد.</p>
-            </a>
-
-            <!-- الأداة 2 -->
-            <a href="jpg-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
-                <div class="text-3xl mb-2">🖼️</div>
-                <h3 class="font-bold text-white mb-1">صور إلى PDF</h3>
-                <p class="text-slate-400 text-xs">تحويل صور JPG/PNG لملف PDF.</p>
-            </a>
-
-            <!-- الأداة 3 -->
-            <a href="compress-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
-                <div class="text-3xl mb-2">🗜️</div>
-                <h3 class="font-bold text-white mb-1">ضغط PDF</h3>
-                <p class="text-slate-400 text-xs">تقليل حجم الملف بجودة عالية.</p>
-            </a>
-
-            <!-- الأداة 4 -->
-            <a href="word-to-pdf.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
-                <div class="text-3xl mb-2">📝</div>
-                <h3 class="font-bold text-white mb-1">Word إلى PDF</h3>
-                <p class="text-slate-400 text-xs">تحويل مستندات Word لـ PDF.</p>
-            </a>
-
-            <!-- الأداة 5 -->
-            <a href="pdf-to-txt.html" class="tool-card bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl card-hover transition block">
-                <div class="text-3xl mb-2">📄</div>
-                <h3 class="font-bold text-white mb-1">PDF إلى TXT</h3>
-                <p class="text-slate-400 text-xs">استخراج كافة النصوص من الملف.</p>
-            </a>
-
-            <!-- باقي الروابط سيتم ربطها مع إرسال كل أداة بالترتيب -->
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-12 flex-grow">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-black text-white mb-4">كل ما تحتاجه للتعامل مع ملفات الـ PDF</h1>
+            <p class="text-slate-400 text-base max-w-2xl mx-auto">مجموعة أدوات احترافية ومجانية بالكامل للتحويل، الضغط، التعديل، والحماية. تعمل محلياً داخل متصفحك لحفظ خصوصيتك.</p>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
-        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
-    </footer>
+        <!-- Tools Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
-    <script>
-        function filterTools() {
-            let val = document.getElementById('search').value.toLowerCase();
-            let cards = document.getElementsByClassName('tool-card');
-            for (let c of cards) {
-                c.style.display = c.innerText.toLowerCase().includes(val) ? 'block' : 'none';
-            }
-        }
+            <!-- Tool 1 -->
+            <a href="merge-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📂</div>
+                    <h3 class="text-lg font-bold text-white mb-1">دمج PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تجميع عدة ملفات PDF في مستند واحد مرتب.</p>
+                </div>
+            </a>
 
-        // معالجة تسجيل الدخول بواسطة Google
-        function handleCredentialResponse(response) {
-            const responsePayload = parseJwt(response.credential);
-            document.querySelector('.g_id_signin').classList.add('hidden');
-            document.getElementById('userProfile').classList.remove('hidden');
-            document.getElementById('userName').innerText = responsePayload.name;
-            document.getElementById('userAvatar').src = responsePayload.picture;
-            localStorage.setItem('userLoggedIn', JSON.stringify(responsePayload));
-        }
+            <!-- Tool 2 -->
+            <a href="split-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">✂️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">تقسيم PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">استخراج صفحات محددة أو فصل الملف لعدة مستندات.</p>
+                </div>
+            </a>
 
-        function parseJwt(token) {
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            return JSON.parse(decodeURIComponent(window.atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join('')));
-        }
+            <!-- Tool 3 -->
+            <a href="compress-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🗜️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">ضغط PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تقليل حجم الملف بجودة عالية لسهولة المشاركة.</p>
+                </div>
+            </a>
 
-        function googleLogout() {
-            localStorage.removeItem('userLoggedIn');
-            location.reload();
-        }
+            <!-- Tool 4 -->
+            <a href="pdf-to-jpg.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🖼️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PDF إلى JPG</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل صفحات المستند إلى صور بجودة عالية.</p>
+                </div>
+            </a>
 
-        // استرجاع جلسة التسجيل إن وجدت
-        window.onload = function() {
-            const user = JSON.parse(localStorage.getItem('userLoggedIn'));
-            if(user) {
-                document.querySelector('.g_id_signin').classList.add('hidden');
-                document.getElementById('userProfile').classList.remove('hidden');
-                document.getElementById('userName').innerText = user.name;
-                document.getElementById('userAvatar').src = user.picture;
-            }
-        }
-    </script>
-</body>
-    </html>
-    
+            <!-- Tool 5 -->
+            <a href="jpg-to-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🌄</div>
+                    <h3 class="text-lg font-bold text-white mb-1">صور إلى PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل صور JPG/PNG إلى ملف PDF واحد.</p>
+                </div>
+            </a>
+
+            <!-- Tool 6 -->
+            <a href="word-to-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📄</div>
+                    <h3 class="text-lg font-bold text-white mb-1">Word إلى PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل مستندات وورد Docx إلى PDF حافظاً للتنسيق.</p>
+                </div>
+            </a>
+
+            <!-- Tool 7 -->
+            <a href="protect-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🔒</div>
+                    <h3 class="text-lg font-bold text-white mb-1">حماية PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">إضافة كلمة سر وتشفير لحماية ملفاتك.</p>
+                </div>
+            </a>
+
+            <!-- Tool 8 -->
+            <a href="unlock-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🔓</div>
+                    <h3 class="text-lg font-bold text-white mb-1">فك حماية PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">إزالة كلمة السر والحماية من الملفات المفضلة.</p>
+
+                </div>
+            </a>
+
+            <!-- Tool 9 -->
+            <a href="rotate-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🔄</div>
+                    <h3 class="text-lg font-bold text-white mb-1">تدوير صفحات PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تعديل اتجاه صفحات الـ PDF بكل سهولة.</p>
+                </div>
+            </a>
+
+            <!-- Tool 10 -->
+            <a href="delete-pdf-pages.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🗑️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">حذف صفحات PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">حذف الصفحات غير المرغوبة من مستندك.</p>
+                </div>
+            </a>
+
+            <!-- Tool 11 -->
+            <a href="watermark-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🏷️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">إضافة علامة مائية</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">حماية حقوقك بنص أو شعار على الصفحات.</p>
+                </div>
+            </a>
+
+            <!-- Tool 12 -->
+            <a href="reorder-pdf-pages.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🔀</div>
+                    <h3 class="text-lg font-bold text-white mb-1">إعادة ترتيب الصفحات</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تغيير وتسلسل أوراق مستندك بسهولة.</p>
+                </div>
+            </a>
+
+            <!-- Tool 13 -->
+            <a href="extract-images-from-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🖼️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">استخراج الصور</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">استخراج كافة الصور الموجودة داخل ملف الـ PDF.</p>
+                </div>
+            </a>
+
+            <!-- Tool 14 -->
+            <a href="excel-to-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📊</div>
+                    <h3 class="text-lg font-bold text-white mb-1">Excel إلى PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل جداول إكسيل إلى صفحات PDF منسقة.</p>
+                </div>
+            </a>
+
+            <!-- Tool 15 -->
+            <a href="powerpoint-to-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">💻</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PowerPoint إلى PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل شرائح العرض التقديمي إلى مستند PDF.</p>
+                </div>
+            </a>
+
+            <!-- Tool 16 -->
+            <a href="png-to-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🎨</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PNG إلى PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل الصور الشفافة PNG إلى ملفات PDF.</p>
+                </div>
+            </a>
+
+            <!-- Tool 17 -->
+            <a href="html-to-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🌐</div>
+                    <h3 class="text-lg font-bold text-white mb-1">HTML إلى PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل صفحات الويب ورسائل البريد إلى PDF.</p>
+                </div>
+            </a>
+
+            <!-- Tool 18 -->
+            <a href="grayscale-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🔘</div>
+                    <h3 class="text-lg font-bold text-white mb-1">تحويل لرمادي (Grayscale)</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل ألوان المستند إلى الأبيض والأسود لتوفير الحبر.</p>
+                </div>
+            </a>
+
+            <!-- Tool 19 -->
+            <a href="pdf-metadata.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">ℹ️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">تعديل بيانات PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تعديل العنوان، المؤلف، والكلمات المفتاحية للمستند.</p>
+                </div>
+            </a>
+
+            <!-- Tool 20 -->
+            <a href="flatten-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📋</div>
+                    <h3 class="text-lg font-bold text-white mb-1">تسطيح الـ PDF (Flatten)</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">دمج النماذج والحقول مع صفحات الـ PDF نهائياً.</p>
+                </div>
+            </a>
+
+            <!-- Tool 21 -->
+            <a href="resize-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📏</div>
+                    <h3 class="text-lg font-bold text-white mb-1">تغيير حجم الصفحات</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تعديل مقاسات الصفحات إلى A4 أو Letter.</p>
+                </div>
+            </a>
+
+            <!-- Tool 22 -->
+            <a href="pdf-reader.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">👁️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">قارئ PDF أونلاين</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">عرض وتصفح مستنداتك وسحب النصوص أونلاين.</p>
+                </div>
+            </a>
+
+            <!-- Tool 23 -->
+            <a href="compare-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🔍</div>
+                    <h3 class="text-lg font-bold text-white mb-1">مقارنة ملفين PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">مقارنة المواصفات وعدد الصفحات والأحجام.</p>
+                </div>
+            </a>
+
+            <!-- Tool 24 -->
+            <a href="sign-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">✍️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">توقيع PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">رسم وإضافة توقيعك اليدوي على المستند مباشرة.</p>
+                </div>
+            </a>
+
+            <!-- Tool 25 -->
+            <a href="pdf-to-txt.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📝</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PDF إلى TXT</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">استخراج كافة النصوص من المستند إلى ملف نصي.</p>
+                </div>
+            </a>
+
+            <!-- Tool 26 -->
+            <a href="pdf-to-html.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🌐</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PDF إلى HTML</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل المستند لصفحة ويب جاهزة للاستخدام.</p>
+                </div>
+            </a>
+
+            <!-- Tool 27 -->
+            <a href="pdf-to-word.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📝</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PDF إلى Word</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل المستند لملف Word قابل للتعديل.</p>
+                </div>
+            </a>
+
+            <!-- Tool 28 -->
+            <a href="pdf-to-svg.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🎨</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PDF إلى SVG</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل الصفحات لرسومات متجهية عالية الجودة.</p>
+                </div>
+            </a>
+
+            <!-- Tool 29 -->
+            <a href="pdf-to-epub.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📚</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PDF إلى EPUB</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل الكتاب لصيغة القراءة الإلكترونية EPUB.</p>
+                </div>
+            </a>
+
+            <!-- Tool 30 -->
+            <a href="scan-to-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🖨️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">ماسح ضوئي إلى PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل صور المستندات الملتقطة لملف PDF.</p>
+                </div>
+            </a>
+
+            <!-- Tool 31 -->
+            <a href="pdf-to-pptx.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📊</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PDF إلى PowerPoint</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تحويل المستند إلى شرائح عرض تقديمي.</p>
+                </div>
+            </a>
+
+            <!-- Tool 32 -->
+            <a href="pdf-to-excel.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📈</div>
+                    <h3 class="text-lg font-bold text-white mb-1">PDF إلى Excel</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">استخراج الجداول والبيانات إلى ملف Excel.</p>
+                </div>
+            </a>
+
+            <!-- Tool 33 -->
+            <a href="add-page-numbers.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🔢</div>
+                    <h3 class="text-lg font-bold text-white mb-1">ترقيم الصفحات</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">إضافة أرقام متسلسلة لصفحات مستندك.</p>
+                </div>
+            </a>
+
+            <!-- Tool 34 -->
+            <a href="pdf-margins.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">📐</div>
+                    <h3 class="text-lg font-bold text-white mb-1">تعديل الهوامش</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">إضافة هوامش وتعديل الحواف للطباعة والتجليد.</p>
+                </div>
+            </a>
+
+            <!-- Tool 35 -->
+            <a href="pdf-background-color.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🎨</div>
+                    <h3 class="text-lg font-bold text-white mb-1">تغيير لون الخلفية</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">تغيير لون الخلفية لصفحات المستند لقراءة مريحة.</p>
+                </div>
+            </a>
+
+            <!-- Tool 36 -->
+            <a href="repair-pdf.html" class="tool-card bg-slate-800/60 border border-slate-700/80 p-5 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl mb-3">🛠️</div>
+                    <h3 class="text-lg font-bold text-white mb-1">إصلاح ملفات PDF</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">ترميم وإصلاح الهيكل لملفات PDF المعطوبة.</p>
+                </div>
+            </a>
+
+            <!-- Tool 37 -->
+            <a href="crop-pdf.html" class="tool-card bg-sl
