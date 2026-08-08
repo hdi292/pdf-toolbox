@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حذف صفحات من PDF مجاناً أونلاين - PDF Toolbox</title>
+    <meta name="description" content="قم بإزالة وحذف الصفحات غير المرغوبة من ملفات الـ PDF الخاصة بك مجاناً وبأمان تام داخل متصفحك دون الحاجة لرفع مستنداتك.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818CF8, #C084FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black flex items-center gap-2">
+                <span>⚡</span> <span class="gradient-text">PDF Toolbox</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <!-- App Section -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-slate-800/60 border border-slate-700/80 p-8 rounded-3xl text-center shadow-2xl mb-12">
+            <div class="text-5xl mb-3">🗑️</div>
+            <h1 class="text-3xl font-black text-white mb-2">أداة حذف صفحات من الـ PDF</h1>
+            <p class="text-slate-400 text-sm mb-8">قم بتصفية المستند وإزالة الصفحات الزائدة أو الفارغة بضغطة زر واحدة.</p>
+
+            <div class="border-2 border-dashed border-indigo-500/50 bg-indigo-950/20 rounded-2xl p-8 text-center">
+                <input type="file" id="pdfFile" accept="application/pdf" class="hidden" onchange="handleFileSelection(event)">
+                <button onclick="document.getElementById('pdfFile').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg">اختيار ملف PDF</button>
+                <p id="fileStatusText" class="mt-4 text-sm font-semibold text-indigo-300"></p>
+                
+                <div id="deleteInputBlock" class="mt-6 hidden max-w-md mx-auto">
+                    <label class="block text-right text-sm font-medium text-slate-300 mb-2">رقم الصفحة المراد حذفها (مثال: 1):</label>
+                    <input type="number" id="pageToDelete" min="1" placeholder="1" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500 text-center">
+                </div>
+            </div>
+
+            <button id="deleteBtn" onclick="processPDFDelete()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold px-10 py-4 rounded-xl mt-6 shadow-xl hidden w-full md:w-auto hover:opacity-90 transition">
+                حذف الصفحة وتحميل المستند 🚀
+            </button>
+        </div>
+
+        <!-- SEO Article -->
+        <article class="bg-slate-900/60 border border-slate-800 p-8 rounded-3xl leading-relaxed text-slate-300 space-y-4">
+            <h2 class="text-2xl font-bold text-white border-r-4 border-indigo-500 pr-3 mb-4">كيفية حذف صفحة معينة من ملف الـ PDF؟</h2>
+            <p>
+                تُساعدك هذه الأداة على تنظيف وتنسيق المستندات والكتب الإلكترونية عبر استبعاد وحذف الأوراق الزائدة أو الصفحات المكررة والتالفة بسهولة ودون التأثير على باقي محتوى المستند.
+            </p>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">خطوات الاستخدام:</h3>
+            <ol class="list-decimal list-inside space-y-2 text-slate-400 text-sm">
+                <li>اضغط على زر <strong class="text-white">"اختيار ملف PDF"</strong> وحدد مستندك.</li>
+                <li>اكتب رقم الصفحة التي تريد إزالتها.</li>
+                <li>اضغط على زر <strong class="text-white">"حذف الصفحة وتحميل المستند"</strong>.</li>
+                <li>سيتم تحميل الملف المعدل تلقائياً باسم <code class="text-indigo-300 bg-slate-800 px-2 py-0.5 rounded">Modified_Document.pdf</code>.</li>
+            </ol>
+
+            <h3 class="text-lg font-bold text-indigo-400 pt-2">أمان الخصوصية:</h3>
+            <p class="text-sm text-slate-400">
+                تتم جميع العمليات على هاتفك أو حاسوبك محلياً دون رفع المستندات لأي خوادم خارجية.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 PDF Toolbox - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        let selectedFile = null;
+        let totalPagesCount = 0;
+
+        async function handleFileSelection(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                selectedFile = files[0];
+                const { PDFDocument } = PDFLib;
+                const fileBytes = await selectedFile.arrayBuffer();
+                const pdfDoc = await PDFDocument.load(fileBytes);
+                totalPagesCount = pdfDoc.getPageCount();
+
+                document.getElementById('fileStatusText').innerText = `تم اختيار: ${selectedFile.name} (إجمالي الصفحات: ${totalPagesCount})`;
+                document.getElementById('deleteInputBlock').classList.remove('hidden');
+                document.getElementById('deleteBtn').classList.remove('hidden');
+            }
+        }
+
+        async function processPDFDelete() {
+            const pageNum = parseInt(document.getElementById('pageToDelete').value);
+            if (!selectedFile) return;
+            if (isNaN(pageNum) || pageNum < 1 || pageNum > totalPagesCount) {
+                alert(`يرجى إدخال رقم صفحة صحيح بين 1 و ${totalPagesCount}`);
+                return;
+            }
+
+            const btn = document.getElementById('deleteBtn');
+            btn.innerText = "جاري حذف الصفحة... ⏳";
+            btn.disabled = true;
+
+            try {
+                const { PDFDocument } = PDFLib;
+                const fileBytes = await selectedFile.arrayBuffer();
+                const pdfDoc = await PDFDocument.load(fileBytes);
+
+                // حذف الصفحة المحددة (المؤشر يبدأ من 0)
+                pdfDoc.removePage(pageNum - 1);
+
+                const modifiedBytes = await pdfDoc.save();
+                download(modifiedBytes, "Modified_Document.pdf", "application/pdf");
+
+                document.getElementById('fileStatusText').innerText = "✅ تم حذف الصفحة وتحميل المستند بنجاح!";
+            } catch (err) {
+                alert("حدث خطأ أثناء تعديل الملف، يرجى التأكد من رفع ملف PDF غير محمي.");
+                console.error(err);
+            } finally {
+                btn.innerText = "حذف الصفحة وتحميل المستند 🚀";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
